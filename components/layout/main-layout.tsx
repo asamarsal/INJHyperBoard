@@ -29,7 +29,11 @@ function MainLayoutContent({ children }: { children: React.ReactNode }) {
       </div>
 
       <main
-        className={cn("min-h-screen p-8 transition-[margin] duration-500 ease-in-out", isCollapsed ? "ml-20" : "ml-64")}
+        className={cn(
+          "min-h-screen transition-[margin,padding] duration-500 ease-in-out",
+          "p-4 pt-20 md:p-8 md:pt-8", // Mobile: top padding for navbar
+          isCollapsed ? "md:ml-20" : "md:ml-64" // Desktop: sidebar margin
+        )}
       >
         {children}
       </main>

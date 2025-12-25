@@ -5,75 +5,74 @@ import { gsap } from "gsap"
 import { BentoCard } from "@/components/ui/bento-card"
 import { TrendingUp, Cpu, Wifi } from "lucide-react"
 
+interface NetworkStats {
+  tps: number
+  validators: number
+  uptime: number
+}
+
 export function BentoLiveData() {
-  const [data, setData] = useState({
+  const [data, setData] = useState<NetworkStats>({
     tps: 0,
     validators: 0,
     uptime: 0,
   })
+  const [loading, setLoading] = useState(true)
   const tpsRef = useRef<HTMLSpanElement>(null)
   const validatorsRef = useRef<HTMLSpanElement>(null)
   const uptimeRef = useRef<HTMLSpanElement>(null)
   const barRef = useRef<HTMLDivElement>(null)
 
+  // Fetch real-time network stats
   useEffect(() => {
-    // Animate counters
-    const tl = gsap.timeline()
+    const fetchNetworkStats = async () => {
+      try {
+        const response = await fetch('/api/network-stats')
+        if (response.ok) {
+          const stats = await response.json()
+          
+          // Animate to new values
+          gsap.to(data, {
+            tps: stats.tps,
+            validators: stats.validators,
+            uptime: stats.uptime,
+            duration: 1.5,
+            ease: "power2.out",
+            onUpdate: () => {
+              if (tpsRef.current) {
+                tpsRef.current.textContent = Math.floor(data.tps).toLocaleString()
+              }
+              if (validatorsRef.current) {
+                validatorsRef.current.textContent = Math.floor(data.validators).toString()
+              }
+              if (uptimeRef.current) {
+                uptimeRef.current.textContent = data.uptime.toFixed(2) + "%"
+              }
+            },
+          })
 
-    tl.to(data, {
-      tps: 10000,
-      duration: 2,
-      ease: "power2.out",
-      onUpdate: () => {
-        if (tpsRef.current) {
-          tpsRef.current.textContent = Math.floor(data.tps).toLocaleString()
+          setData(stats)
+          setLoading(false)
+
+          // Animate progress bar
+          if (barRef.current) {
+            gsap.to(barRef.current, { width: `${stats.uptime}%`, duration: 1.5, ease: "power2.out" })
+          }
         }
-      },
-    })
-      .to(
-        data,
-        {
-          validators: 150,
-          duration: 1.5,
-          ease: "power2.out",
-          onUpdate: () => {
-            if (validatorsRef.current) {
-              validatorsRef.current.textContent = Math.floor(data.validators).toString()
-            }
-          },
-        },
-        "-=1.5",
-      )
-      .to(
-        data,
-        {
-          uptime: 99.99,
-          duration: 1.5,
-          ease: "power2.out",
-          onUpdate: () => {
-            if (uptimeRef.current) {
-              uptimeRef.current.textContent = data.uptime.toFixed(2) + "%"
-            }
-          },
-        },
-        "-=1.5",
-      )
-
-    // Animate progress bar
-    if (barRef.current) {
-      gsap.fromTo(barRef.current, { width: "0%" }, { width: "99.99%", duration: 2, ease: "power2.out" })
+      } catch (error) {
+        console.error('Error fetching network stats:', error)
+        setLoading(false)
+      }
     }
 
-    // Pulsing animation for live indicator
-    const pulseInterval = setInterval(() => {
-      setData((prev) => ({
-        ...prev,
-        tps: 10000 + Math.floor(Math.random() * 500 - 250),
-      }))
-    }, 2000)
+    // Initial fetch
+    fetchNetworkStats()
+
+    // Refresh every 10 seconds
+    const interval = setInterval(fetchNetworkStats, 10000)
 
     return () => {
-      clearInterval(pulseInterval)
+      clearInterval(interval)
       gsap.killTweensOf(data)
     }
   }, [])
@@ -83,7 +82,7 @@ export function BentoLiveData() {
       <div className="flex h-full flex-col">
         <div className="mb-6 flex items-center justify-between">
           <h3 className="font-[var(--font-orbitron)] text-sm font-bold uppercase tracking-wider text-cyan-400">
-            Live Data
+            Realtime Data
           </h3>
           <div className="flex items-center gap-2">
             <div className="h-2 w-2 animate-pulse rounded-full bg-emerald-500" />
@@ -99,7 +98,7 @@ export function BentoLiveData() {
               <span className="text-xs uppercase tracking-wider text-slate-500">Transactions/sec</span>
             </div>
             <span ref={tpsRef} className="text-3xl font-bold text-white">
-              0
+              {loading ? "..." : "0"}
             </span>
           </div>
 
@@ -110,7 +109,7 @@ export function BentoLiveData() {
               <span className="text-xs uppercase tracking-wider text-slate-500">Active Validators</span>
             </div>
             <span ref={validatorsRef} className="text-3xl font-bold text-white">
-              0
+              {loading ? "..." : "0"}
             </span>
           </div>
 
@@ -121,10 +120,10 @@ export function BentoLiveData() {
               <span className="text-xs uppercase tracking-wider text-slate-500">Network Uptime</span>
             </div>
             <span ref={uptimeRef} className="text-3xl font-bold text-white">
-              0%
+              {loading ? "..." : "0%"}
             </span>
             <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-slate-800">
-              <div ref={barRef} className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-emerald-500" />
+              <div ref={barRef} className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-emerald-500" style={{ width: '0%' }} />
             </div>
           </div>
         </div>

@@ -5,6 +5,109 @@ import { FuturisticCard } from "@/components/ui/futuristic-card"
 import { cn } from "@/lib/utils"
 import { ArrowRightLeft, RefreshCw, FileCode, Fuel, TrendingDown, TrendingUp, Minus } from "lucide-react"
 
+interface GasDataPoint {
+  time: string
+  gasPrice: number
+  minutesAgo: number
+}
+
+function GasPriceChart() {
+  const [historicalData, setHistoricalData] = useState<GasDataPoint[]>([])
+  const [loading, setLoading] = useState(true)
+  const [avgGasPrice, setAvgGasPrice] = useState(0)
+
+  useEffect(() => {
+    const fetchHistoricalData = async () => {
+      try {
+        const response = await fetch('/api/gas-history')
+        if (response.ok) {
+          const data = await response.json()
+          setHistoricalData(data.data || [])
+          setAvgGasPrice(data.average || 0)
+        }
+      } catch (error) {
+        console.error('Error fetching historical gas data:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchHistoricalData()
+    const interval = setInterval(fetchHistoricalData, 60000) // Refresh every minute
+
+    return () => clearInterval(interval)
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="mt-6 flex items-center justify-center py-8">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-cyan-400 border-t-transparent" />
+      </div>
+    )
+  }
+
+  const maxGasPrice = Math.max(...historicalData.map(d => d.gasPrice))
+  const minGasPrice = Math.min(...historicalData.map(d => d.gasPrice))
+
+  return (
+    <div className="mt-6">
+      <div className="mb-4 flex items-center justify-between">
+        <h4 className="text-sm font-semibold text-foreground">Last 30 Minutes</h4>
+        <div className="flex items-center gap-2">
+          <Fuel className="h-4 w-4 text-cyan-400" />
+          <span className="text-xs text-muted-foreground">Average Gas Price</span>
+          <span className="font-mono text-sm font-semibold text-cyan-400">{avgGasPrice.toFixed(7)} INJ</span>
+        </div>
+      </div>
+
+      {/* Chart */}
+      <div className="relative h-32 rounded-lg border border-white/[0.05] bg-white/[0.02] p-4">
+        <div className="flex h-full items-end justify-between gap-1">
+          {historicalData.map((point, index) => {
+            const heightPercent = ((point.gasPrice - minGasPrice) / (maxGasPrice - minGasPrice || 1)) * 100
+            return (
+              <div
+                key={index}
+                className="group relative flex-1"
+                style={{ height: '100%' }}
+              >
+                <div className="flex h-full flex-col justify-end">
+                  <div
+                    className="w-full rounded-t-sm bg-gradient-to-t from-fuchsia-500/50 to-fuchsia-400/80 transition-all duration-300 hover:from-fuchsia-500/70 hover:to-fuchsia-400"
+                    style={{ height: `${Math.max(heightPercent, 5)}%` }}
+                  />
+                </div>
+                {/* Tooltip */}
+                <div className="pointer-events-none absolute -top-16 left-1/2 z-10 hidden -translate-x-1/2 whitespace-nowrap rounded-lg border border-white/[0.1] bg-slate-900/95 px-3 py-2 text-xs shadow-lg group-hover:block">
+                  <p className="font-mono text-cyan-400">{point.gasPrice.toFixed(7)} INJ</p>
+                  <p className="text-slate-400">{point.time}</p>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Y-axis labels */}
+        <div className="absolute left-0 top-0 flex h-full flex-col justify-between py-1 pr-2 text-[10px] text-slate-500">
+          <span>{maxGasPrice.toFixed(7)}</span>
+          <span>{minGasPrice.toFixed(7)}</span>
+        </div>
+      </div>
+
+      {/* X-axis labels */}
+      <div className="mt-2 flex justify-between px-4 text-[10px] text-slate-500">
+        <span>Now</span>
+        <span>5m</span>
+        <span>10m</span>
+        <span>15m</span>
+        <span>20m</span>
+        <span>25m</span>
+        <span>30m</span>
+      </div>
+    </div>
+  )
+}
+
 type ActionType = "transfer" | "swap" | "contract"
 
 interface CostEstimate {
@@ -253,6 +356,9 @@ export function CostCalculator() {
                 ? "Gas prices are decreasing. This is a good time to execute transactions."
                 : "Gas prices are stable. Network conditions are normal."}
           </p>
+
+          {/* Historical Gas Price Chart */}
+          <GasPriceChart />
         </FuturisticCard>
       )}
 

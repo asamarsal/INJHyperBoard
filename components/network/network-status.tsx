@@ -168,7 +168,7 @@ export function NetworkStatus() {
           <div className="mt-4">
             <p className="text-sm text-muted-foreground">Network Health</p>
             <p className="text-base sm:text-xl font-mono font-bold text-emerald-400">
-              {loading ? "..." : error ? "Error" : "Operational"}
+              {loading ? "Loading..." : error ? "Error" : "Operational"}
             </p>
           </div>
         </FuturisticCard>
@@ -200,7 +200,7 @@ export function NetworkStatus() {
           <div className="mt-4">
             <p className="text-sm text-muted-foreground">Block Time</p>
             <p className="font-mono text-xl font-bold text-fuchsia-400">
-              {loading ? "..." : networkData?.blockTime || "~1.2s"}
+              {loading ? "Loading..." : networkData?.blockTime || "~1.2s"}
             </p>
           </div>
         </FuturisticCard>
@@ -216,7 +216,7 @@ export function NetworkStatus() {
           <div className="mt-4">
             <p className="text-sm text-muted-foreground">Gas Price</p>
             <p className="font-mono text-xl font-bold text-cyan-400">
-              {loading ? "..." : networkData?.gasPrice || "0.0001 INJ"}
+              {loading ? "Loading..." : networkData?.gasPrice || "0.0001 INJ"}
             </p>
           </div>
         </FuturisticCard>
