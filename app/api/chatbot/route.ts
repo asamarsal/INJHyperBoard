@@ -29,8 +29,15 @@ export async function POST(request: NextRequest) {
 
         if (isPriceQuery) {
             try {
+                // Determine the base URL (works on both localhost and Vercel)
+                const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http'
+                const host = request.headers.get('host') || 'localhost:3000'
+                const baseUrl = `${protocol}://${host}`
+
                 // Fetch real-time price from our API
-                const priceResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/price`)
+                const priceResponse = await fetch(`${baseUrl}/api/price`, {
+                    cache: 'no-store' // Ensure fresh data
+                })
                 if (priceResponse.ok) {
                     const priceData = await priceResponse.json()
                     const trend = priceData.change24h >= 0 ? "up" : "down"
