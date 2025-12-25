@@ -15,22 +15,26 @@ import {
   FileCode,
   Activity,
   ChevronLeft,
-  ChevronRight,
+  ChevronRight, // Kept as it's used
   Menu,
   X,
+  Home, // Added for Dashboard
+  FileText, // Added for Transaction Preview
+  Layers, // Added for Ecosystem
 } from "lucide-react"
 import { RobotAvatar } from "@/components/ui/robot-avatar"
 
 import { useSidebar } from "@/components/providers/sidebar-provider"
 
 const navItems = [
-  { name: "Dashboard", href: "/", icon: LayoutDashboard },
+  { name: "Dashboard", href: "/", icon: Home }, // Icon changed
   { name: "Chatbot", href: "/chatbot", icon: MessageSquare },
-  { name: "Transaction Preview", href: "/transaction", icon: ArrowRightLeft },
+  { name: "Transaction Preview", href: "/transaction", icon: FileText }, // Icon changed
   { name: "Cost Estimator", href: "/cost-estimator", icon: Calculator },
   { name: "Wallet Activity", href: "/wallet", icon: Wallet },
   { name: "Contract Explorer", href: "/contracts", icon: FileCode },
   { name: "Network Status", href: "/network", icon: Activity },
+  { name: "Ecosystem", href: "/ecosystem", icon: Layers }, // New item added
 ]
 
 export function Sidebar() {
