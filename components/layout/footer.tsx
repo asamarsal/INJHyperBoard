@@ -12,14 +12,23 @@ export function Footer({ isCollapsed = false }: FooterProps) {
           {/* Copyright */}
           <div className="text-center sm:text-left">
             <p className="text-sm text-slate-300">
-              © {currentYear} <span className="font-semibold text-cyan-400">Asa Marsal</span>. All rights reserved.
+              © {currentYear}{" "}
+              <a 
+                href="https://linktr.ee/asamarsal" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="font-semibold text-cyan-400 hover:text-cyan-300 transition-colors duration-200 hover:underline"
+              >
+                Asa Marsal
+              </a>
+              . All rights reserved.
             </p>
           </div>
 
           {/* Additional Info */}
           <div className="flex items-center gap-4 text-xs text-slate-400">
             <span>Built with Next.js</span>
-            <span className="hidden sm:inline">•</span>
+            <span className="">|</span>
             <span>Powered by Injective x Ninja Labs</span>
           </div>
         </div>

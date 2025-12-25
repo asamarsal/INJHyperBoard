@@ -293,7 +293,7 @@ export function CostCalculator() {
         <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           <FuturisticCard glowColor="emerald" delay={0.2} className="text-center">
             <p className="text-sm text-muted-foreground">Minimum Cost</p>
-            <p className="mt-2 text-xl sm:text-2xl font-bold text-foreground break-all">{loading ? "..." : estimate.minGas}</p>
+            <p className="mt-2 text-xl sm:text-2xl font-bold text-foreground break-all">{loading ? "Loading..." : estimate.minGas}</p>
             <p className="text-sm text-muted-foreground">{loading ? "Loading..." : estimate.minUsd}</p>
             <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-white/[0.05]">
               <div className="h-full w-1/4 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
@@ -303,7 +303,7 @@ export function CostCalculator() {
 
           <FuturisticCard glowColor="cyan" delay={0.25} className="text-center">
             <p className="text-sm text-muted-foreground">Average Cost</p>
-            <p className="mt-2 text-2xl sm:text-3xl font-bold text-cyan-400 break-all">{loading ? "..." : estimate.avgGas}</p>
+            <p className="mt-2 text-2xl sm:text-3xl font-bold text-cyan-400 break-all">{loading ? "Loading..." : estimate.avgGas}</p>
             <p className="text-sm text-muted-foreground">{loading ? "Loading..." : estimate.avgUsd}</p>
             <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-white/[0.05]">
               <div className="h-full w-1/2 rounded-full bg-cyan-500 shadow-[0_0_10px_rgba(0,255,255,0.5)]" />
@@ -313,7 +313,7 @@ export function CostCalculator() {
 
           <FuturisticCard glowColor="magenta" delay={0.3} className="text-center">
             <p className="text-sm text-muted-foreground">Maximum Cost</p>
-            <p className="mt-2 text-xl sm:text-2xl font-bold text-foreground break-all">{loading ? "..." : estimate.maxGas}</p>
+            <p className="mt-2 text-xl sm:text-2xl font-bold text-foreground break-all">{loading ? "Loading..." : estimate.maxGas}</p>
             <p className="text-sm text-muted-foreground">{loading ? "Loading..." : estimate.maxUsd}</p>
             <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-white/[0.05]">
               <div className="h-full w-3/4 rounded-full bg-fuchsia-500 shadow-[0_0_10px_rgba(255,0,255,0.5)]" />
