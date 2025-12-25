@@ -6,7 +6,7 @@ Link demo : https://injhyperboard.vercel.app/
 
 Experience the future of decentralized finance with Injective. Lightning-fast transactions, near-zero fees, and unlimited DeFi possibilities powered by AI assistance.
 
-![INJHyperBoard Cover](https://raw.githubusercontent.com/asamarsal/INJHyperBoard/main/public/injhyperboard-cover.png)
+![INJHyperBoard Cover](https://raw.githubusercontent.com/asamarsal/INJHyperBoard/refs/heads/main/public/injhyperboard-dashboard.png)
 
 ---
 
