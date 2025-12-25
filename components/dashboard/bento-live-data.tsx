@@ -126,6 +126,10 @@ export function BentoLiveData() {
               <div ref={barRef} className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-emerald-500" style={{ width: '0%' }} />
             </div>
           </div>
+
+          <span className="text-xs text-white/50 text-center">
+              All data is real from API
+            </span>
         </div>
       </div>
     </BentoCard>

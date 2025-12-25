@@ -228,7 +228,7 @@ export function ChatInterface() {
               <Send className="h-4 w-4" />
             </button>
           </div>
-          <p className="mt-2 text-center text-xs text-muted-foreground">
+          <p className="mt-4 text-center text-xs text-muted-foreground">
             Powered by Injective documentation and community knowledge
           </p>
         </form>

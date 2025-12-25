@@ -1,13 +1,36 @@
 "use client"
 
 import type React from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Sidebar } from "./sidebar"
+import { Footer } from "./footer"
 import { SidebarProvider, useSidebar } from "@/components/providers/sidebar-provider"
 import { cn } from "@/lib/utils"
 
 function MainLayoutContent({ children }: { children: React.ReactNode }) {
   const { isCollapsed } = useSidebar()
+  const [isLogoVisible, setIsLogoVisible] = useState(true)
+  const [lastScrollY, setLastScrollY] = useState(0)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+
+      if (currentScrollY > lastScrollY && currentScrollY > 30) {
+        // Scrolling down & past 30px
+        setIsLogoVisible(false)
+      } else if (currentScrollY < lastScrollY) {
+        // Scrolling up
+        setIsLogoVisible(true)
+      }
+
+      setLastScrollY(currentScrollY)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [lastScrollY])
 
   return (
     <div className="min-h-screen bg-[#030712] cyber-grid">
@@ -17,8 +40,11 @@ function MainLayoutContent({ children }: { children: React.ReactNode }) {
 
       <Sidebar />
       
-      {/* Injective Logo - Top Right (Hidden on mobile) */}
-      <div className="fixed right-8 top-8 z-30 transition-all duration-300 hover:scale-110 hidden md:block">
+      {/* Injective Logo - Top Right (Aligned with Dashboard header, hidden when scrolled) */}
+      <div className={cn(
+        "absolute right-8 top-8 z-30 transition-opacity duration-300 hover:scale-110 hidden md:block",
+        isLogoVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+      )}>
         <Image 
           src="/images/injective-inj-logo.png" 
           alt="Injective Logo" 
@@ -37,6 +63,8 @@ function MainLayoutContent({ children }: { children: React.ReactNode }) {
       >
         {children}
       </main>
+
+      <Footer isCollapsed={isCollapsed} />
     </div>
   )
 }
