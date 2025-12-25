@@ -134,7 +134,7 @@ export function BentoHero() {
       />
 
       <div ref={containerRef} className="relative z-10 flex h-full flex-col justify-between">
-        <div className="flex items-start justify-between">
+        <div className="flex items-start justify-between gap-4">
           <div>
             <div className="mb-4 flex items-center gap-6">
               <div className="relative h-20 w-20 flex-shrink-0">
