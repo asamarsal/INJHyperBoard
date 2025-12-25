@@ -225,6 +225,14 @@ export function Sidebar() {
                   ref={(el) => {
                     navItemsRef.current[index] = el
                   }}
+                  onClick={() => {
+                    // Play navigation sound with slight delay for loading
+                    setTimeout(() => {
+                      const audio = new Audio('/soundfx/sound-navigation.mp3')
+                      audio.volume = 0.8
+                      audio.play().catch(err => console.log('Audio play failed:', err))
+                    }, 50) // 0.05 second delay
+                  }}
                   title={isCollapsed ? item.name : undefined}
                   className={cn(
                     "group relative flex items-center rounded-xl text-sm font-medium transition-all duration-300",
