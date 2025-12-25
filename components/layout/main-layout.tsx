@@ -42,7 +42,7 @@ function MainLayoutContent({ children }: { children: React.ReactNode }) {
       
       {/* Injective Logo - Top Right (Aligned with Dashboard header, hidden when scrolled) */}
       <div className={cn(
-        "absolute right-8 top-8 z-30 transition-opacity duration-300 hover:scale-110 hidden md:block",
+        "absolute right-8 top-8 z-30 transition-all duration-300 hidden md:block group cursor-pointer",
         isLogoVisible ? "opacity-100" : "opacity-0 pointer-events-none"
       )}>
         <Image 
@@ -50,7 +50,7 @@ function MainLayoutContent({ children }: { children: React.ReactNode }) {
           alt="Injective Logo" 
           width={48} 
           height={48}
-          className="object-contain drop-shadow-[0_0_15px_rgba(0,255,255,0.5)]"
+          className="object-contain drop-shadow-[0_0_15px_rgba(0,255,255,0.5)] transition-transform duration-500 group-hover:rotate-180 group-hover:scale-110"
         />
       </div>
 
