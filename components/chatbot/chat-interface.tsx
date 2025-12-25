@@ -99,9 +99,9 @@ export function ChatInterface() {
 
   return (
     <FuturisticCard glowColor="cyan" className="p-0 overflow-hidden" delay={0.1}>
-      <div className="flex h-[calc(100vh-10rem)] flex-col">
+      <div className="flex h-[calc(100vh-12rem)] sm:h-[calc(100vh-10rem)] flex-col">
         {/* Chat Header */}
-        <div className="flex items-center gap-3 border-b border-white/[0.08] px-6 py-4 bg-white/[0.02]">
+        <div className="flex items-center gap-2 sm:gap-3 border-b border-white/[0.08] px-3 sm:px-6 py-3 sm:py-4 bg-white/[0.02]">
           <div className="relative">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-cyan-500/20">
               <Bot className="h-5 w-5 text-cyan-400" />
@@ -109,14 +109,14 @@ export function ChatInterface() {
             <div className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-[#0a0f1a] bg-emerald-500 animate-pulse" />
           </div>
           <div>
-            <h2 className="font-semibold text-foreground">Injective AI Assistant</h2>
+            <h2 className="text-sm sm:text-base font-semibold text-foreground">Injective AI Assistant</h2>
             <p className="text-xs text-muted-foreground">Ask anything about Injective</p>
           </div>
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-6">
-          <div className="space-y-6">
+        <div className="flex-1 overflow-y-auto p-3 sm:p-6">
+          <div className="space-y-4 sm:space-y-6">
             {messages.map((message, index) => (
               <div
                 key={message.id}
@@ -136,7 +136,7 @@ export function ChatInterface() {
                 </div>
                 <div
                   className={cn(
-                    "max-w-[70%] rounded-xl px-4 py-3 border",
+                    "max-w-[85%] sm:max-w-[70%] rounded-xl px-3 sm:px-4 py-2 sm:py-3 border",
                     message.role === "user"
                       ? "bg-fuchsia-500/10 border-fuchsia-500/20"
                       : "bg-cyan-500/5 border-cyan-500/20",

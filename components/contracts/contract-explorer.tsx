@@ -53,7 +53,7 @@ export function ContractExplorer() {
   return (
     <div className="space-y-6">
       <FuturisticCard glowColor="magenta" delay={0.1}>
-        <div className="relative flex gap-3">
+        <div className="relative flex flex-col sm:flex-row gap-2 sm:gap-3">
           <div className="relative flex-1">
             <Input
               placeholder="Enter contract address (e.g., inj1...)"
@@ -77,17 +77,17 @@ export function ContractExplorer() {
       {isLoaded && (
         <>
           <FuturisticCard glowColor="magenta" delay={0.2}>
-            <div className="flex items-start justify-between">
+            <div className="flex flex-col sm:flex-row items-start sm:items-start justify-between gap-3 sm:gap-0">
               <div className="flex items-center gap-3">
                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-fuchsia-500/20">
                   <Code className="h-6 w-6 text-fuchsia-400" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-foreground">Token Contract</h3>
+                  <h3 className="text-base sm:text-lg font-semibold text-foreground">Token Contract</h3>
                   <p className="font-mono text-sm text-muted-foreground">{address || "inj1abc...xyz"}</p>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <span className="rounded-full bg-emerald-500/20 border border-emerald-500/30 px-3 py-1 text-xs font-medium text-emerald-400">
                   Verified
                 </span>
@@ -97,7 +97,7 @@ export function ContractExplorer() {
               </div>
             </div>
 
-            <div className="mt-6 grid grid-cols-3 gap-4">
+            <div className="mt-4 sm:mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
               <div className="rounded-lg bg-white/[0.02] border border-white/[0.05] p-4">
                 <p className="text-sm text-muted-foreground">Total Transactions</p>
                 <p className="font-mono text-xl font-semibold text-foreground">12,456</p>

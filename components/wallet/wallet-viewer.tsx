@@ -96,7 +96,7 @@ export function WalletViewer() {
     <div className="space-y-6">
       {/* Search Input */}
       <FuturisticCard glowColor="cyan" delay={0.1}>
-        <div className="relative flex gap-3">
+        <div className="relative flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
             <Input
               placeholder="Enter wallet address (e.g., inj1...)"
@@ -109,7 +109,7 @@ export function WalletViewer() {
           </div>
           <Button
             onClick={handleSearch}
-            className="h-12 gap-2 bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 px-6 hover:bg-cyan-500/30 hover:shadow-[0_0_20px_rgba(0,255,255,0.3)]"
+            className="h-12 gap-2 bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 px-6 hover:bg-cyan-500/30 hover:shadow-[0_0_20px_rgba(0,255,255,0.3)] w-full sm:w-auto touch-manipulation"
           >
             <Search className="h-4 w-4" />
             Scan Wallet

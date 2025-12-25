@@ -120,7 +120,7 @@ export function BentoHero() {
   }, [isCollapsed])
 
   return (
-    <BentoCard glowColor="cyan" size="lg" className="relative col-span-2 row-span-2 overflow-hidden">
+    <BentoCard glowColor="cyan" size="lg" className="relative md:col-span-2 md:row-span-2 overflow-hidden">
       {/* Background particles */}
       <div ref={particlesRef} className="pointer-events-none absolute inset-0" />
 
@@ -133,11 +133,11 @@ export function BentoHero() {
         }}
       />
 
-      <div ref={containerRef} className="relative z-10 flex h-full flex-col justify-between">
-        <div className="flex items-start justify-between gap-4">
+      <div ref={containerRef} className="relative z-10 flex h-full flex-col justify-between p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row items-start justify-between gap-3 sm:gap-4">
           <div>
-            <div className="mb-4 flex items-center gap-6">
-              <div className="relative h-20 w-20 flex-shrink-0">
+            <div className="mb-3 sm:mb-4 flex items-center gap-4 sm:gap-6">
+              <div className="relative h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0">
                 {/* Robot - visible when sidebar is collapsed */}
                 <div ref={robotRef} className="absolute left-0 top-0">
                   <RobotAvatar size="md" variant="cyan" />
@@ -154,13 +154,13 @@ export function BentoHero() {
                 </div>
               </div>
               <div className="flex flex-col">
-                <span className="text-xs uppercase tracking-widest text-cyan-500/70">AI-Powered</span>
+                <span className="text-[10px] sm:text-xs uppercase tracking-widest text-cyan-500/70">AI-Powered</span>
                 <HologramText size="xl" variant="cyan">
                   INJECTIVE
                 </HologramText>
               </div>
             </div>
-            <p className="text-sm text-muted-foreground">Control Center</p>
+            <p className="text-xs sm:text-sm text-muted-foreground">Control Center</p>
           </div>
           <div className="flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3 py-1">
             <Sparkles className="h-4 w-4 text-cyan-400" />
@@ -168,12 +168,12 @@ export function BentoHero() {
           </div>
         </div>
 
-        <div className="mt-6">
-          <p className="text-sm leading-relaxed text-slate-300">
+        <div className="mt-4 sm:mt-6">
+          <p className="text-xs sm:text-sm leading-relaxed text-slate-300 line-clamp-3 sm:line-clamp-none">
             Experience the future of decentralized finance with Injective. Lightning-fast transactions, near-zero fees,
             and unlimited DeFi possibilities powered by AI assistance.
           </p>
-          <div className="mt-4 flex gap-3">
+          <div className="mt-3 sm:mt-4 flex flex-col sm:flex-row gap-2 sm:gap-3">
             <a
               href="https://docs.injective.network"
               target="_blank"

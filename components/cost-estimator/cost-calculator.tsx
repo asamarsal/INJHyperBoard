@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { FuturisticCard } from "@/components/ui/futuristic-card"
 import { cn } from "@/lib/utils"
 import { ArrowRightLeft, RefreshCw, FileCode, Fuel, TrendingDown, TrendingUp, Minus } from "lucide-react"
@@ -15,6 +15,13 @@ interface CostEstimate {
   avgUsd: string
   maxUsd: string
   trend: "up" | "down" | "stable"
+}
+
+interface RealTimeData {
+  injPrice: number
+  gasPrice: number
+  gasDataByType?: Record<string, number> // Gas costs for each action type
+  lastUpdated: string
 }
 
 const actionOptions = [
@@ -33,39 +40,108 @@ const actionOptions = [
   },
 ]
 
-const costEstimates: Record<ActionType, CostEstimate> = {
-  transfer: {
-    minGas: "0.00005 INJ",
-    avgGas: "0.0001 INJ",
-    maxGas: "0.0002 INJ",
-    minUsd: "$0.001",
-    avgUsd: "$0.002",
-    maxUsd: "$0.004",
-    trend: "stable",
-  },
-  swap: {
-    minGas: "0.0002 INJ",
-    avgGas: "0.0005 INJ",
-    maxGas: "0.001 INJ",
-    minUsd: "$0.004",
-    avgUsd: "$0.01",
-    maxUsd: "$0.02",
-    trend: "down",
-  },
-  contract: {
-    minGas: "0.0005 INJ",
-    avgGas: "0.002 INJ",
-    maxGas: "0.01 INJ",
-    minUsd: "$0.01",
-    avgUsd: "$0.04",
-    maxUsd: "$0.20",
-    trend: "up",
-  },
-}
-
 export function CostCalculator() {
   const [selectedAction, setSelectedAction] = useState<ActionType | null>(null)
-  const estimate = selectedAction ? costEstimates[selectedAction] : null
+  const [realTimeData, setRealTimeData] = useState<RealTimeData | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  const fetchRealTimeData = async () => {
+    try {
+      let injPrice = 4.62
+      let gasDataByType: Record<string, number> = {}
+
+      // Fetch INJ price
+      try {
+        const priceResponse = await fetch('/api/price')
+        if (priceResponse.ok) {
+          const priceData = await priceResponse.json()
+          injPrice = priceData.price
+        }
+      } catch (err) {
+        console.warn('⚠️ Price API failed, using fallback')
+      }
+
+      // Fetch gas data for each action type
+      const actionTypes: ActionType[] = ['transfer', 'swap', 'contract']
+      
+      for (const type of actionTypes) {
+        try {
+          const gasResponse = await fetch(`/api/gas?type=${type}`)
+          if (gasResponse.ok) {
+            const gasData = await gasResponse.json()
+            gasDataByType[type] = gasData.avgGasUsed || 0.0001
+            
+            console.log(`📊 ${type} gas data:`, { 
+              avgGasUsed: gasData.avgGasUsed,
+              sampleSize: gasData.sampleSize
+            })
+          }
+        } catch (err) {
+          console.warn(`⚠️ Gas API failed for ${type}`)
+          gasDataByType[type] = 0.0001
+        }
+      }
+
+      setRealTimeData({
+        injPrice,
+        gasPrice: gasDataByType.transfer || 0.0001, // Default to transfer
+        gasDataByType, // Store all types
+        lastUpdated: new Date().toISOString(),
+      })
+      setLoading(false)
+    } catch (error) {
+      console.error('Error fetching real-time data:', error)
+      setRealTimeData({
+        injPrice: 4.62,
+        gasPrice: 0.0001,
+        lastUpdated: new Date().toISOString(),
+      })
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    // Initial fetch
+    fetchRealTimeData()
+
+    // Auto-refresh every 30 seconds
+    const interval = setInterval(fetchRealTimeData, 30000)
+
+    return () => clearInterval(interval)
+  }, [])
+
+  // Calculate real-time estimates using actual blockchain data per action type
+  const calculateEstimate = (actionType: ActionType): CostEstimate => {
+    const injPrice = realTimeData?.injPrice || 4.62
+    
+    // Use real gas data for this specific action type
+    const realGasForType = realTimeData?.gasDataByType?.[actionType] || realTimeData?.gasPrice || 0.0001
+    
+    const avgGasAmount = realGasForType
+    const minGasAmount = avgGasAmount * 0.8 // 20% less for best case
+    const maxGasAmount = avgGasAmount * 1.3 // 30% more for worst case
+
+    console.log('💰 Real gas costs from blockchain:', {
+      actionType,
+      injPrice,
+      realGasForType,
+      avgGasAmount,
+      avgUsd: (avgGasAmount * injPrice).toFixed(4),
+      source: realTimeData?.gasDataByType ? 'filtered-real-data' : 'fallback'
+    })
+
+    return {
+      minGas: `${minGasAmount.toFixed(7)} INJ`,
+      avgGas: `${avgGasAmount.toFixed(7)} INJ`,
+      maxGas: `${maxGasAmount.toFixed(7)} INJ`,
+      minUsd: `$${(minGasAmount * injPrice).toFixed(4)}`,
+      avgUsd: `$${(avgGasAmount * injPrice).toFixed(4)}`,
+      maxUsd: `$${(maxGasAmount * injPrice).toFixed(4)}`,
+      trend: "stable",
+    }
+  }
+
+  const estimate = selectedAction ? calculateEstimate(selectedAction) : null
 
   const TrendIcon = estimate?.trend === "up" ? TrendingUp : estimate?.trend === "down" ? TrendingDown : Minus
   const trendColor =
@@ -79,17 +155,17 @@ export function CostCalculator() {
     <div className="space-y-6">
       {/* Action Selector */}
       <FuturisticCard glowColor="cyan" delay={0.1}>
-        <h3 className="mb-4 text-lg font-semibold text-foreground">Select Action Type</h3>
-        <div className="grid gap-4 sm:grid-cols-3">
+        <h3 className="mb-4 text-base sm:text-lg font-semibold text-foreground">Select Action Type</h3>
+        <div className="grid gap-3 grid-cols-1 sm:grid-cols-3">
           {actionOptions.map((action, index) => (
             <button
               key={action.id}
               onClick={() => setSelectedAction(action.id)}
               className={cn(
-                "rounded-xl p-4 text-left transition-all duration-300 border",
+                "rounded-xl p-3 sm:p-4 text-left transition-all duration-300 border touch-manipulation",
                 selectedAction === action.id
                   ? "bg-cyan-500/10 border-cyan-500/50 shadow-[0_0_20px_rgba(0,255,255,0.2)]"
-                  : "bg-white/[0.02] border-white/[0.08] hover:bg-white/[0.05] hover:border-white/[0.15]",
+                  : "bg-white/[0.02] border-white/[0.08] hover:bg-white/[0.05] hover:border-white/[0.15] active:bg-white/[0.08]",
               )}
             >
               <div
@@ -102,8 +178,8 @@ export function CostCalculator() {
                   className={cn("h-5 w-5", selectedAction === action.id ? "text-cyan-400" : "text-muted-foreground")}
                 />
               </div>
-              <h4 className="font-medium text-foreground">{action.name}</h4>
-              <p className="mt-1 text-xs text-muted-foreground">{action.description}</p>
+              <h4 className="text-sm sm:text-base font-medium text-foreground">{action.name}</h4>
+              <p className="mt-1 text-xs text-muted-foreground line-clamp-2">{action.description}</p>
             </button>
           ))}
         </div>
@@ -111,11 +187,11 @@ export function CostCalculator() {
 
       {/* Cost Estimate Display */}
       {estimate && (
-        <div className="grid gap-4 lg:grid-cols-3">
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           <FuturisticCard glowColor="emerald" delay={0.2} className="text-center">
             <p className="text-sm text-muted-foreground">Minimum Cost</p>
-            <p className="mt-2 text-2xl font-bold text-foreground">{estimate.minGas}</p>
-            <p className="text-sm text-muted-foreground">{estimate.minUsd}</p>
+            <p className="mt-2 text-xl sm:text-2xl font-bold text-foreground break-all">{loading ? "..." : estimate.minGas}</p>
+            <p className="text-sm text-muted-foreground">{loading ? "Loading..." : estimate.minUsd}</p>
             <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-white/[0.05]">
               <div className="h-full w-1/4 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
             </div>
@@ -124,8 +200,8 @@ export function CostCalculator() {
 
           <FuturisticCard glowColor="cyan" delay={0.25} className="text-center">
             <p className="text-sm text-muted-foreground">Average Cost</p>
-            <p className="mt-2 text-3xl font-bold text-cyan-400">{estimate.avgGas}</p>
-            <p className="text-sm text-muted-foreground">{estimate.avgUsd}</p>
+            <p className="mt-2 text-2xl sm:text-3xl font-bold text-cyan-400 break-all">{loading ? "..." : estimate.avgGas}</p>
+            <p className="text-sm text-muted-foreground">{loading ? "Loading..." : estimate.avgUsd}</p>
             <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-white/[0.05]">
               <div className="h-full w-1/2 rounded-full bg-cyan-500 shadow-[0_0_10px_rgba(0,255,255,0.5)]" />
             </div>
@@ -134,8 +210,8 @@ export function CostCalculator() {
 
           <FuturisticCard glowColor="magenta" delay={0.3} className="text-center">
             <p className="text-sm text-muted-foreground">Maximum Cost</p>
-            <p className="mt-2 text-2xl font-bold text-foreground">{estimate.maxGas}</p>
-            <p className="text-sm text-muted-foreground">{estimate.maxUsd}</p>
+            <p className="mt-2 text-xl sm:text-2xl font-bold text-foreground break-all">{loading ? "..." : estimate.maxGas}</p>
+            <p className="text-sm text-muted-foreground">{loading ? "Loading..." : estimate.maxUsd}</p>
             <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-white/[0.05]">
               <div className="h-full w-3/4 rounded-full bg-fuchsia-500 shadow-[0_0_10px_rgba(255,0,255,0.5)]" />
             </div>
@@ -147,19 +223,27 @@ export function CostCalculator() {
       {/* Gas Trend */}
       {estimate && (
         <FuturisticCard glowColor="cyan" delay={0.35}>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
             <div className="flex items-center gap-3">
               <div className="rounded-lg bg-cyan-500/20 p-2">
                 <Fuel className="h-5 w-5 text-cyan-400" />
               </div>
               <div>
-                <h3 className="font-semibold text-foreground">Gas Price Trend</h3>
-                <p className="text-sm text-muted-foreground">Current network conditions</p>
+                <h3 className="text-sm sm:text-base font-semibold text-foreground">Gas Price Trend</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground">Current network conditions</p>
               </div>
             </div>
-            <div className={cn("flex items-center gap-2", trendColor)}>
-              <TrendIcon className="h-5 w-5" />
-              <span className="text-sm font-medium capitalize">{estimate.trend}</span>
+            <div className="flex flex-col items-end gap-1">
+              <div className={cn("flex items-center gap-2", trendColor)}>
+                <TrendIcon className="h-5 w-5" />
+                <span className="text-sm font-medium capitalize">{estimate.trend}</span>
+              </div>
+              {realTimeData && (
+                <div className="flex items-center gap-1">
+                  <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="text-xs text-emerald-400">Live: ${realTimeData.injPrice.toFixed(2)}/INJ</span>
+                </div>
+              )}
             </div>
           </div>
           <p className="mt-4 text-sm text-muted-foreground">

@@ -17,8 +17,8 @@ function MainLayoutContent({ children }: { children: React.ReactNode }) {
 
       <Sidebar />
       
-      {/* Injective Logo - Top Right */}
-      <div className="fixed right-8 top-8 z-30 transition-all duration-300 hover:scale-110">
+      {/* Injective Logo - Top Right (Hidden on mobile) */}
+      <div className="fixed right-8 top-8 z-30 transition-all duration-300 hover:scale-110 hidden md:block">
         <Image 
           src="/images/injective-inj-logo.png" 
           alt="Injective Logo" 

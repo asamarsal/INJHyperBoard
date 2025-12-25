@@ -21,7 +21,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Bento Grid Layout */}
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4" style={{ gridAutoRows: 'minmax(180px, auto)' }}>
+          <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4" style={{ gridAutoRows: 'minmax(180px, auto)' }}>
             {/* Hero - Large card spanning 2 cols and 2 rows */}
             <BentoHero />
 

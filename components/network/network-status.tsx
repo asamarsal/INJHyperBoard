@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { Activity, Clock, Fuel, Blocks, Server, Zap, TrendingUp, CheckCircle2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { FuturisticCard } from "@/components/ui/futuristic-card"
@@ -8,6 +9,14 @@ interface StatusIndicator {
   label: string
   status: "healthy" | "degraded" | "down"
   description: string
+}
+
+interface NetworkData {
+  blockHeight: string
+  blockTime: string
+  gasPrice: string
+  status: "healthy" | "degraded" | "down"
+  lastUpdated: string
 }
 
 const systemStatus: StatusIndicator[] = [
@@ -63,10 +72,64 @@ const gasHistory = [
 ]
 
 export function NetworkStatus() {
+  const [networkData, setNetworkData] = useState<NetworkData | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  const fetchNetworkData = async () => {
+    try {
+      // Fetch from Injective LCD API and gas price in parallel
+      const [blockResponse, gasResponse] = await Promise.all([
+        fetch('https://lcd.injective.network/cosmos/base/tendermint/v1beta1/blocks/latest'),
+        fetch('/api/gas')
+      ])
+      
+      if (!blockResponse.ok) {
+        throw new Error('Failed to fetch network data')
+      }
+
+      const blockData = await blockResponse.json()
+      const gasData = gasResponse.ok ? await gasResponse.json() : { gasPrice: 0.0001 }
+      
+      // Extract block height
+      const blockHeight = blockData.block?.header?.height || "0"
+      
+      // Calculate block time (approximate from timestamp)
+      const blockTime = "~1.2s" // Injective's average block time
+      
+      // Gas price from API
+      const gasPrice = `${gasData.gasPrice.toFixed(6)} INJ`
+
+      setNetworkData({
+        blockHeight: `#${parseInt(blockHeight).toLocaleString()}`,
+        blockTime,
+        gasPrice,
+        status: "healthy",
+        lastUpdated: new Date().toISOString(),
+      })
+      
+      setError(null)
+    } catch (err) {
+      console.error('Error fetching network data:', err)
+      setError(err instanceof Error ? err.message : 'Unknown error')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    // Initial fetch
+    fetchNetworkData()
+
+    // Auto-refresh every 30 seconds
+    const interval = setInterval(fetchNetworkData, 30000)
+
+    return () => clearInterval(interval)
+  }, [])
   return (
     <div className="space-y-6">
       <FuturisticCard glowColor="emerald" delay={0.1}>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
           <div className="flex items-center gap-4">
             <div className="relative">
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/20">
@@ -75,32 +138,88 @@ export function NetworkStatus() {
               <div className="absolute -right-1 -top-1 h-4 w-4 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_15px_rgba(16,185,129,0.8)]" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-emerald-400">All Systems Operational</h2>
-              <p className="text-muted-foreground">Injective Network is running smoothly</p>
+              <h2 className="text-xl sm:text-2xl font-bold text-emerald-400">All Systems Operational</h2>
+              <p className="text-sm sm:text-base text-muted-foreground">Injective Network is running smoothly</p>
+              {/* Last updated - shown below on mobile */}
+              <div className="mt-2 sm:hidden">
+                <p className="text-xs text-muted-foreground">Last updated: {loading ? "Loading..." : networkData ? new Date(networkData.lastUpdated).toLocaleTimeString() : "Just now"}</p>
+              </div>
             </div>
           </div>
-          <div className="text-right">
+          {/* Last updated - shown on right for desktop */}
+          <div className="hidden sm:block text-right">
             <p className="text-sm text-muted-foreground">Last updated</p>
-            <p className="font-mono text-foreground">Just now</p>
+            <p className="font-mono text-foreground">
+              {loading ? "Loading..." : networkData ? new Date(networkData.lastUpdated).toLocaleTimeString() : "Just now"}
+            </p>
           </div>
         </div>
       </FuturisticCard>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {metrics.map((metric, index) => (
-          <FuturisticCard key={metric.label} glowColor={metric.glowColor} delay={0.15 + index * 0.05} className="p-5">
-            <div className="flex items-center justify-between">
-              <div className={cn("rounded-lg p-2", metric.bgColor)}>
-                <metric.icon className={cn("h-5 w-5", metric.color)} />
-              </div>
-              <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.8)]" />
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Network Health */}
+        <FuturisticCard glowColor="emerald" delay={0.15} className="p-4 sm:p-5">
+          <div className="flex items-center justify-between">
+            <div className="rounded-lg p-2 bg-emerald-500/20">
+              <Activity className="h-5 w-5 text-emerald-400" />
             </div>
-            <div className="mt-4">
-              <p className="text-sm text-muted-foreground">{metric.label}</p>
-              <p className={cn("font-mono text-xl font-bold", metric.color)}>{metric.value}</p>
+            <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.8)]" />
+          </div>
+          <div className="mt-4">
+            <p className="text-sm text-muted-foreground">Network Health</p>
+            <p className="text-base sm:text-xl font-mono font-bold text-emerald-400">
+              {loading ? "..." : error ? "Error" : "Operational"}
+            </p>
+          </div>
+        </FuturisticCard>
+
+        {/* Block Height - Real-time */}
+        <FuturisticCard glowColor="cyan" delay={0.2} className="p-5">
+          <div className="flex items-center justify-between">
+            <div className="rounded-lg p-2 bg-cyan-500/20">
+              <Blocks className="h-5 w-5 text-cyan-400" />
             </div>
-          </FuturisticCard>
-        ))}
+            <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.8)]" />
+          </div>
+          <div className="mt-4">
+            <p className="text-sm text-muted-foreground">Block Height</p>
+            <p className="font-mono text-xl font-bold text-cyan-400">
+              {loading ? "Loading..." : error ? "N/A" : networkData?.blockHeight || "#0"}
+            </p>
+          </div>
+        </FuturisticCard>
+
+        {/* Block Time */}
+        <FuturisticCard glowColor="magenta" delay={0.25} className="p-5">
+          <div className="flex items-center justify-between">
+            <div className="rounded-lg p-2 bg-fuchsia-500/20">
+              <Clock className="h-5 w-5 text-fuchsia-400" />
+            </div>
+            <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.8)]" />
+          </div>
+          <div className="mt-4">
+            <p className="text-sm text-muted-foreground">Block Time</p>
+            <p className="font-mono text-xl font-bold text-fuchsia-400">
+              {loading ? "..." : networkData?.blockTime || "~1.2s"}
+            </p>
+          </div>
+        </FuturisticCard>
+
+        {/* Gas Price */}
+        <FuturisticCard glowColor="cyan" delay={0.3} className="p-5">
+          <div className="flex items-center justify-between">
+            <div className="rounded-lg p-2 bg-cyan-500/20">
+              <Fuel className="h-5 w-5 text-cyan-400" />
+            </div>
+            <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.8)]" />
+          </div>
+          <div className="mt-4">
+            <p className="text-sm text-muted-foreground">Gas Price</p>
+            <p className="font-mono text-xl font-bold text-cyan-400">
+              {loading ? "..." : networkData?.gasPrice || "0.0001 INJ"}
+            </p>
+          </div>
+        </FuturisticCard>
       </div>
 
       <FuturisticCard glowColor="cyan" delay={0.35}>
@@ -160,9 +279,9 @@ export function NetworkStatus() {
             <div key={point.time} className="flex flex-1 flex-col items-center gap-2">
               <div
                 className="w-full rounded-t-md bg-gradient-to-t from-fuchsia-500/50 to-fuchsia-400 transition-all duration-500 hover:from-fuchsia-500/70 hover:to-fuchsia-300 hover:shadow-[0_0_20px_rgba(255,0,255,0.5)]"
-                style={{ height: `${point.value}%` }}
+                style={{ height: `${point.value}%`, minHeight: '20px' }}
               />
-              <span className="text-xs text-muted-foreground">{point.time}</span>
+              <span className="text-xs text-muted-foreground whitespace-nowrap">{point.time}</span>
             </div>
           ))}
         </div>

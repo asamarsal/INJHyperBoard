@@ -79,7 +79,7 @@ export function BentoLiveData() {
   }, [])
 
   return (
-    <BentoCard glowColor="cyan" size="md" delay={0.6} className="row-span-2">
+    <BentoCard glowColor="cyan" size="md" delay={0.6} className="md:row-span-2">
       <div className="flex h-full flex-col">
         <div className="mb-6 flex items-center justify-between">
           <h3 className="font-[var(--font-orbitron)] text-sm font-bold uppercase tracking-wider text-cyan-400">

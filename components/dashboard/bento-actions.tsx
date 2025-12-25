@@ -128,7 +128,7 @@ function ActionItem({ action, index }: ActionItemProps) {
 
 export function BentoActions() {
   return (
-    <BentoCard glowColor="purple" size="md" delay={0.5} className="col-span-2 row-span-2">
+    <BentoCard glowColor="purple" size="md" delay={0.5} className="md:col-span-2 md:row-span-2">
       <div className="mb-4 flex items-center justify-between">
         <h3 className="font-[var(--font-orbitron)] text-lg font-bold text-white">Quick Actions</h3>
         <span className="rounded-full border border-violet-500/30 bg-violet-500/10 px-3 py-1 text-xs text-violet-400">

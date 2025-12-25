@@ -147,7 +147,7 @@ function TelegramIcon({ className }: { className?: string }) {
 
 export function BentoLinks() {
   return (
-    <BentoCard glowColor="purple" size="md" delay={0.7} className="col-span-1 row-span-2">
+    <BentoCard glowColor="purple" size="md" delay={0.7} className="md:col-span-1 md:row-span-2">
       <div className="mb-3">
         <h3 className="font-[var(--font-orbitron)] text-base font-bold text-white">Resources & Community</h3>
       </div>

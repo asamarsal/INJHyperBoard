@@ -88,17 +88,23 @@ export function FuturisticCard({
 
       // Animate corner lines
       if (enableCornerLines) {
-        gsap.to([topLeftLineH.current, topLeftLineV.current], {
-          width: topLeftLineH.current ? "40px" : undefined,
-          height: topLeftLineV.current ? "40px" : undefined,
-          opacity: 1,
+        gsap.to(topLeftLineH.current, {
+          width: "24px", // w-6 = 24px
           duration: 0.3,
           ease: "power2.out",
         })
-        gsap.to([bottomRightLineH.current, bottomRightLineV.current], {
-          width: bottomRightLineH.current ? "40px" : undefined,
-          height: bottomRightLineV.current ? "40px" : undefined,
-          opacity: 1,
+        gsap.to(topLeftLineV.current, {
+          height: "24px", // h-6 = 24px
+          duration: 0.3,
+          ease: "power2.out",
+        })
+        gsap.to(bottomRightLineH.current, {
+          width: "24px",
+          duration: 0.3,
+          ease: "power2.out",
+        })
+        gsap.to(bottomRightLineV.current, {
+          height: "24px",
           duration: 0.3,
           ease: "power2.out",
         })
@@ -125,17 +131,23 @@ export function FuturisticCard({
 
       // Reset corner lines
       if (enableCornerLines) {
-        gsap.to([topLeftLineH.current, topLeftLineV.current], {
-          width: topLeftLineH.current ? "20px" : undefined,
-          height: topLeftLineV.current ? "20px" : undefined,
-          opacity: 0.5,
+        gsap.to(topLeftLineH.current, {
+          width: "16px", // w-4 = 16px
           duration: 0.3,
           ease: "power2.out",
         })
-        gsap.to([bottomRightLineH.current, bottomRightLineV.current], {
-          width: bottomRightLineH.current ? "20px" : undefined,
-          height: bottomRightLineV.current ? "20px" : undefined,
-          opacity: 0.5,
+        gsap.to(topLeftLineV.current, {
+          height: "16px", // h-4 = 16px
+          duration: 0.3,
+          ease: "power2.out",
+        })
+        gsap.to(bottomRightLineH.current, {
+          width: "16px",
+          duration: 0.3,
+          ease: "power2.out",
+        })
+        gsap.to(bottomRightLineV.current, {
+          height: "16px",
           duration: 0.3,
           ease: "power2.out",
         })
@@ -225,21 +237,19 @@ export function FuturisticCard({
 
       {/* Corner accent lines - Top Left */}
       {enableCornerLines && (
-        <div className="absolute left-0 top-0 h-12 w-12 pointer-events-none">
+        <div className="absolute left-0 top-0 h-8 w-8 pointer-events-none">
           <div
             ref={topLeftLineH}
             className={cn(
-              "absolute left-0 top-0 h-[2px] w-[20px] opacity-50 transition-all duration-300",
+              "absolute left-0 top-0 h-[2px] w-4 transition-all duration-300",
               lineColors[glowColor],
-              isNear && "animate-pulse",
             )}
           />
           <div
             ref={topLeftLineV}
             className={cn(
-              "absolute left-0 top-0 h-[20px] w-[2px] opacity-50 transition-all duration-300",
+              "absolute left-0 top-0 h-4 w-[2px] transition-all duration-300",
               lineColors[glowColor],
-              isNear && "animate-pulse",
             )}
           />
         </div>
@@ -247,21 +257,19 @@ export function FuturisticCard({
 
       {/* Corner accent lines - Bottom Right */}
       {enableCornerLines && (
-        <div className="absolute bottom-0 right-0 h-12 w-12 pointer-events-none">
+        <div className="absolute bottom-0 right-0 h-8 w-8 pointer-events-none">
           <div
             ref={bottomRightLineH}
             className={cn(
-              "absolute bottom-0 right-0 h-[2px] w-[20px] opacity-50 transition-all duration-300",
+              "absolute bottom-0 right-0 h-[2px] w-4 transition-all duration-300",
               lineColors[glowColor],
-              isNear && "animate-pulse",
             )}
           />
           <div
             ref={bottomRightLineV}
             className={cn(
-              "absolute bottom-0 right-0 h-[20px] w-[2px] opacity-50 transition-all duration-300",
+              "absolute bottom-0 right-0 h-4 w-[2px] transition-all duration-300",
               lineColors[glowColor],
-              isNear && "animate-pulse",
             )}
           />
         </div>
