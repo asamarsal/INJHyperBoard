@@ -215,7 +215,7 @@ export function Sidebar() {
         <button
           ref={toggleButtonRef}
           onClick={toggleSidebar}
-          className="absolute -right-3 top-24 z-50 flex h-6 w-6 items-center justify-center rounded-full border border-cyan-500/50 bg-slate-900 text-cyan-400 shadow-[0_0_10px_rgba(0,255,255,0.3)] transition-all hover:bg-cyan-500/20 hover:shadow-[0_0_20px_rgba(0,255,255,0.5)]"
+          className="absolute -right-3 top-24 z-50 flex h-6 w-6 items-center justify-center rounded-full border border-pink-500/50 bg-slate-900 text-pink-400 shadow-[0_0_10px_rgba(236,72,153,0.3)] transition-all hover:bg-pink-500/20 hover:shadow-[0_0_20px_rgba(236,72,153,0.5)]"
         >
           {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
         </button>
@@ -235,20 +235,20 @@ export function Sidebar() {
                 className={cn(
                   "group relative flex items-center rounded-xl text-sm font-medium transition-all duration-300",
                   isCollapsed ? "justify-center px-2 py-3" : "gap-3 px-4 py-3",
-                  isActive ? "bg-cyan-500/10 text-cyan-400" : "text-slate-400 hover:bg-white/[0.03] hover:text-white",
+                  isActive ? "bg-pink-500/10 text-pink-400" : "text-slate-400 hover:bg-white/[0.03] hover:text-white",
                 )}
               >
                 {/* Active indicator */}
                 {isActive && (
-                  <div className="absolute left-0 top-1/2 h-8 w-1 -translate-y-1/2 rounded-r-full bg-cyan-500 shadow-[0_0_10px_rgba(0,255,255,0.8)]" />
+                  <div className="absolute left-0 top-1/2 h-8 w-1 -translate-y-1/2 rounded-r-full bg-pink-500 shadow-[0_0_10px_rgba(236,72,153,0.8)]" />
                 )}
 
                 <item.icon
                   className={cn(
                     "h-5 w-5 flex-shrink-0 transition-all duration-300",
                     isActive
-                      ? "text-cyan-400 drop-shadow-[0_0_8px_rgba(0,255,255,0.8)]"
-                      : "group-hover:text-cyan-400 group-hover:drop-shadow-[0_0_8px_rgba(0,255,255,0.5)]",
+                      ? "text-pink-400 drop-shadow-[0_0_8px_rgba(236,72,153,0.8)]"
+                      : "group-hover:text-pink-400 group-hover:drop-shadow-[0_0_8px_rgba(236,72,153,0.5)]",
                   )}
                 />
                 <span className={cn("overflow-hidden whitespace-nowrap", isCollapsed && "hidden")}>{item.name}</span>
@@ -258,7 +258,7 @@ export function Sidebar() {
                   className={cn(
                     "pointer-events-none absolute inset-0 rounded-xl opacity-0 transition-opacity duration-300",
                     "group-hover:opacity-100",
-                    "bg-gradient-to-r from-cyan-500/5 to-transparent",
+                    "bg-gradient-to-r from-pink-500/5 to-transparent",
                   )}
                 />
               </Link>
@@ -278,7 +278,7 @@ export function Sidebar() {
             </div>
             {!isCollapsed && (
               <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-slate-800">
-                <div className="h-full w-[99%] rounded-full bg-gradient-to-r from-cyan-500 to-emerald-500" />
+                <div className="h-full w-[99%] rounded-full bg-gradient-to-r from-pink-500 to-emerald-500" />
               </div>
             )}
           </div>

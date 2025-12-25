@@ -5,6 +5,7 @@ import { BentoStats } from "@/components/dashboard/bento-stats"
 import { BentoActions } from "@/components/dashboard/bento-actions"
 import { BentoLiveData } from "@/components/dashboard/bento-live-data"
 import { BentoLinks } from "@/components/dashboard/bento-links"
+import { BentoPriceCard } from "@/components/dashboard/bento-price"
 
 export default function DashboardPage() {
   return (
@@ -23,6 +24,9 @@ export default function DashboardPage() {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4" style={{ gridAutoRows: 'minmax(180px, auto)' }}>
             {/* Hero - Large card spanning 2 cols and 2 rows */}
             <BentoHero />
+
+            {/* INJ Price Card - Real-time from CoinGecko */}
+            <BentoPriceCard />
 
             {/* Stats cards */}
             <BentoStats />

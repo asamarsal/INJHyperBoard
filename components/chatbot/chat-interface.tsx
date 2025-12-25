@@ -5,6 +5,7 @@ import { useState, useRef, useEffect } from "react"
 import { Send, Bot, User, Sparkles } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { FuturisticCard } from "@/components/ui/futuristic-card"
+import { parseMarkdownToHTML } from "@/lib/markdown-parser"
 
 interface Message {
   id: string
@@ -23,15 +24,7 @@ const initialMessages: Message[] = [
   },
 ]
 
-const sampleResponses: Record<string, string> = {
-  default:
-    "Injective is a lightning-fast blockchain built for finance. It offers instant transaction finality, near-zero gas fees, and provides access to unlimited decentralized markets including derivatives, forex, and synthetics.",
-  gas: "Injective has some of the lowest gas fees in the industry. The average gas cost is around 0.0001 INJ (~$0.002 USD). This makes it extremely cost-effective for frequent trading and DeFi operations.",
-  staking:
-    "You can stake INJ tokens to earn rewards and participate in network governance. The current staking APY varies between 15-20%. Staking also helps secure the network through Proof of Stake consensus.",
-  bridge:
-    "Injective Bridge allows you to transfer assets between Injective and other blockchains including Ethereum, Cosmos Hub, Solana, and more. It uses secure cross-chain messaging protocols to ensure safe transfers.",
-}
+
 
 export function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>(initialMessages)
@@ -59,36 +52,54 @@ export function ChatInterface() {
     }
 
     setMessages((prev) => [...prev, userMessage])
+    const currentInput = input
     setInput("")
     setIsTyping(true)
 
-    setTimeout(() => {
-      const lowerInput = input.toLowerCase()
-      let response = sampleResponses.default
+    try {
+      // Call the Gemini API endpoint
+      const response = await fetch("/api/chatbot", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: currentInput }),
+      })
 
-      if (lowerInput.includes("gas") || lowerInput.includes("fee")) {
-        response = sampleResponses.gas
-      } else if (lowerInput.includes("stak")) {
-        response = sampleResponses.staking
-      } else if (lowerInput.includes("bridge") || lowerInput.includes("transfer")) {
-        response = sampleResponses.bridge
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to get response")
       }
 
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: response,
+        content: data.response,
         timestamp: new Date(),
       }
 
       setMessages((prev) => [...prev, assistantMessage])
+    } catch (error) {
+      console.error("Error calling chatbot API:", error)
+      
+      // Show error message to user
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: "assistant",
+        content: `Sorry, I encountered an error: ${error instanceof Error ? error.message : "Unknown error"}. Please make sure your Gemini API key is configured in the .env.local file.`,
+        timestamp: new Date(),
+      }
+
+      setMessages((prev) => [...prev, errorMessage])
+    } finally {
       setIsTyping(false)
-    }, 1500)
+    }
   }
 
   return (
     <FuturisticCard glowColor="cyan" className="p-0 overflow-hidden" delay={0.1}>
-      <div className="flex h-[calc(100vh-12rem)] flex-col">
+      <div className="flex h-[calc(100vh-10rem)] flex-col">
         {/* Chat Header */}
         <div className="flex items-center gap-3 border-b border-white/[0.08] px-6 py-4 bg-white/[0.02]">
           <div className="relative">
@@ -131,7 +142,10 @@ export function ChatInterface() {
                       : "bg-cyan-500/5 border-cyan-500/20",
                   )}
                 >
-                  <p className="text-sm leading-relaxed text-foreground">{message.content}</p>
+                  <div 
+                    className="text-sm leading-relaxed text-foreground [&>p]:mb-3 [&>p:last-child]:mb-0 [&>strong]:font-semibold [&>strong]:text-cyan-300 [&>em]:italic [&>ul]:my-2 [&>ul]:space-y-1.5 [&>li]:leading-relaxed"
+                    dangerouslySetInnerHTML={{ __html: parseMarkdownToHTML(message.content) }}
+                  />
                   <p className="mt-2 text-xs text-muted-foreground">
                     {message.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                   </p>
@@ -152,6 +166,47 @@ export function ChatInterface() {
               </div>
             )}
             <div ref={messagesEndRef} />
+          </div>
+        </div>
+
+        {/* Quick Action Buttons */}
+        <div className="border-t border-white/[0.08] px-4 py-3 bg-white/[0.02]">
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => setInput("What is Injective?")}
+              className="px-3 py-1.5 text-xs rounded-lg border border-cyan-500/30 bg-cyan-500/5 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-500/50 transition-all duration-200"
+            >
+              What is Injective?
+            </button>
+            <button
+              type="button"
+              onClick={() => setInput("What is the current INJ price?")}
+              className="px-3 py-1.5 text-xs rounded-lg border border-cyan-500/30 bg-cyan-500/5 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-500/50 transition-all duration-200"
+            >
+              INJ Price
+            </button>
+            <button
+              type="button"
+              onClick={() => setInput("How do I stake INJ tokens?")}
+              className="px-3 py-1.5 text-xs rounded-lg border border-cyan-500/30 bg-cyan-500/5 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-500/50 transition-all duration-200"
+            >
+              How to Stake
+            </button>
+            <button
+              type="button"
+              onClick={() => setInput("What are the gas fees on Injective?")}
+              className="px-3 py-1.5 text-xs rounded-lg border border-cyan-500/30 bg-cyan-500/5 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-500/50 transition-all duration-200"
+            >
+              Gas Fees
+            </button>
+            <button
+              type="button"
+              onClick={() => setInput("How does the Injective Bridge work?")}
+              className="px-3 py-1.5 text-xs rounded-lg border border-cyan-500/30 bg-cyan-500/5 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-500/50 transition-all duration-200"
+            >
+              Bridge Guide
+            </button>
           </div>
         </div>
 

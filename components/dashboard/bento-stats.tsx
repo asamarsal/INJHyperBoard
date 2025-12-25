@@ -113,21 +113,6 @@ export function BentoStats() {
         </div>
       </BentoCard>
 
-      <BentoCard glowColor="cyan" size="md" delay={0.3}>
-        <div className="flex h-full flex-col justify-between">
-          <span className="mb-4 text-xs uppercase tracking-wider text-cyan-500/70">Latest Block</span>
-          <StatItem
-            icon={Blocks}
-            label="Height"
-            value="#78,234,567"
-            subtitle="2 seconds ago"
-            trend="up"
-            glowColor="cyan"
-            delay={0.3}
-          />
-        </div>
-      </BentoCard>
-
       <BentoCard glowColor="magenta" size="md" delay={0.4}>
         <div className="flex h-full flex-col justify-between">
           <span className="mb-4 text-xs uppercase tracking-wider text-fuchsia-500/70">Performance</span>
