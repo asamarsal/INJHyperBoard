@@ -57,15 +57,15 @@ export function BentoPriceCard() {
             <DollarSign className="h-6 w-6 text-fuchsia-400" />
           </div>
           <div className="flex-1">
-            <p className="text-xs uppercase tracking-wider text-slate-500">Current Price</p>
+            <p className="text-xs uppercase tracking-wider text-muted-foreground">Current Price</p>
             <div className="flex items-center gap-2">
               {loading ? (
-                <span className="text-xl font-bold text-white">Loading...</span>
+                <span className="text-xl font-bold text-foreground">Loading...</span>
               ) : error ? (
                 <span className="text-sm text-red-400">Error loading price</span>
               ) : priceData ? (
                 <>
-                  <span className="text-xl font-bold text-white">
+                  <span className="text-xl font-bold text-foreground">
                     ${priceData.price.toFixed(2)}
                   </span>
                   {isPositive ? (

@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Orbitron, Inter } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { SidebarProvider } from "@/components/providers/sidebar-provider"
+import { ThemeProvider } from "@/contexts/theme-context"
 import "./globals.css"
 
 const orbitron = Orbitron({
@@ -34,11 +35,13 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <body className={`${orbitron.variable} ${inter.variable} font-sans antialiased`}>
-        <SidebarProvider>
-          {children}
-        </SidebarProvider>
+        <ThemeProvider>
+          <SidebarProvider>
+            {children}
+          </SidebarProvider>
+        </ThemeProvider>
         <Analytics />
       </body>
     </html>

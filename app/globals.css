@@ -1,50 +1,55 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
-
-/* Cyberpunk Injective Theme - Dark mode only */
+/* Cyberpunk Injective Theme */
 :root {
-  --background: oklch(0.06 0.02 260);
-  --foreground: oklch(0.95 0 0);
-  --card: oklch(0.1 0.015 260);
-  --card-foreground: oklch(0.95 0 0);
-  --popover: oklch(0.08 0.015 260);
-  --popover-foreground: oklch(0.95 0 0);
-  --primary: oklch(0.75 0.18 195);
-  --primary-foreground: oklch(0.1 0.02 260);
-  --secondary: oklch(0.15 0.015 260);
-  --secondary-foreground: oklch(0.9 0 0);
-  --muted: oklch(0.12 0.01 260);
-  --muted-foreground: oklch(0.6 0 0);
-  --accent: oklch(0.7 0.2 320);
-  --accent-foreground: oklch(0.95 0 0);
+  /* Light mode by default - HIGH CONTRAST */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.1 0 0);
+  /* Pure black text */
+  --card: oklch(0.98 0 0);
+  --card-foreground: oklch(0.1 0 0);
+  /* Pure black text */
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.1 0 0);
+  --primary: oklch(0.5 0.2 195);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.95 0 0);
+  --secondary-foreground: oklch(0.1 0 0);
+  /* Pure black */
+  --muted: oklch(0.96 0 0);
+  --muted-foreground: oklch(0.3 0 0);
+  /* Darker gray for muted text */
+  --accent: oklch(0.6 0.25 320);
+  --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.55 0.22 25);
-  --destructive-foreground: oklch(0.95 0 0);
-  --border: oklch(0.2 0.02 260);
-  --input: oklch(0.12 0.015 260);
-  --ring: oklch(0.75 0.18 195);
-  --chart-1: oklch(0.75 0.18 195);
-  --chart-2: oklch(0.7 0.2 320);
-  --chart-3: oklch(0.65 0.18 280);
-  --chart-4: oklch(0.8 0.15 160);
-  --chart-5: oklch(0.7 0.22 350);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.2 0 0);
+  /* Black border for light mode */
+  --input: oklch(0.95 0 0);
+  --ring: oklch(0.5 0.2 195);
+  --chart-1: oklch(0.5 0.2 195);
+  --chart-2: oklch(0.6 0.25 320);
+  --chart-3: oklch(0.55 0.2 280);
+  --chart-4: oklch(0.65 0.18 160);
+  --chart-5: oklch(0.6 0.25 350);
   --radius: 0.75rem;
-  --sidebar: oklch(0.05 0.02 260);
-  --sidebar-foreground: oklch(0.85 0 0);
-  --sidebar-primary: oklch(0.75 0.18 195);
-  --sidebar-primary-foreground: oklch(0.1 0.02 260);
-  --sidebar-accent: oklch(0.12 0.02 260);
-  --sidebar-accent-foreground: oklch(0.95 0 0);
-  --sidebar-border: oklch(0.15 0.02 260);
-  --sidebar-ring: oklch(0.75 0.18 195);
+  --sidebar: oklch(0.98 0 0);
+  --sidebar-foreground: oklch(0.1 0 0);
+  /* Pure black */
+  --sidebar-primary: oklch(0.5 0.2 195);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.96 0 0);
+  --sidebar-accent-foreground: oklch(0.1 0 0);
+  --sidebar-border: oklch(0.9 0 0);
+  --sidebar-ring: oklch(0.5 0.2 195);
 
-  /* Custom cyberpunk colors */
-  --neon-cyan: oklch(0.85 0.2 195);
-  --neon-magenta: oklch(0.75 0.25 320);
-  --neon-purple: oklch(0.7 0.22 280);
-  --glow-cyan: oklch(0.75 0.18 195 / 0.5);
-  --glow-magenta: oklch(0.7 0.2 320 / 0.5);
+  /* Custom cyberpunk colors - vibrant neon */
+  --neon-cyan: oklch(0.5 0.25 195);
+  --neon-magenta: oklch(0.6 0.3 320);
+  --neon-purple: oklch(0.55 0.25 280);
+  --glow-cyan: oklch(0.5 0.2 195 / 0.4);
+  --glow-magenta: oklch(0.6 0.25 320 / 0.4);
 }
 
 .dark {
@@ -80,6 +85,64 @@
   --sidebar-accent-foreground: oklch(0.95 0 0);
   --sidebar-border: oklch(0.2 0.02 260);
   --sidebar-ring: oklch(0.75 0.18 195);
+}
+
+/* Light Mode */
+.light {
+  /* Pure white background */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.2 0.02 260);
+
+  /* Cards with slight gray */
+  --card: oklch(0.98 0 0);
+  --card-foreground: oklch(0.2 0.02 260);
+
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.2 0.02 260);
+
+  /* Neon cyan primary */
+  --primary: oklch(0.55 0.2 195);
+  --primary-foreground: oklch(1 0 0);
+
+  --secondary: oklch(0.95 0 0);
+  --secondary-foreground: oklch(0.2 0.02 260);
+
+  --muted: oklch(0.96 0 0);
+  --muted-foreground: oklch(0.5 0 0);
+
+  /* Neon magenta accent */
+  --accent: oklch(0.6 0.25 320);
+  --accent-foreground: oklch(1 0 0);
+
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(1 0 0);
+
+  --border: oklch(0.9 0 0);
+  --input: oklch(0.95 0 0);
+  --ring: oklch(0.55 0.2 195);
+
+  --chart-1: oklch(0.55 0.2 195);
+  --chart-2: oklch(0.6 0.25 320);
+  --chart-3: oklch(0.55 0.2 280);
+  --chart-4: oklch(0.65 0.18 160);
+  --chart-5: oklch(0.6 0.25 350);
+
+  /* Sidebar with light gray */
+  --sidebar: oklch(0.98 0 0);
+  --sidebar-foreground: oklch(0.25 0.02 260);
+  --sidebar-primary: oklch(0.55 0.2 195);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.96 0 0);
+  --sidebar-accent-foreground: oklch(0.2 0.02 260);
+  --sidebar-border: oklch(0.92 0 0);
+  --sidebar-ring: oklch(0.55 0.2 195);
+
+  /* Custom cyberpunk colors for light mode - vibrant neon */
+  --neon-cyan: oklch(0.55 0.25 195);
+  --neon-magenta: oklch(0.6 0.3 320);
+  --neon-purple: oklch(0.55 0.25 280);
+  --glow-cyan: oklch(0.55 0.2 195 / 0.4);
+  --glow-magenta: oklch(0.6 0.25 320 / 0.4);
 }
 
 @theme inline {
@@ -132,6 +195,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -167,13 +231,11 @@
 
 /* Neon Glow Effects */
 .neon-glow-cyan {
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.4), 0 0 20px rgba(0, 255, 255, 0.2), 0 0 40px rgba(0, 255, 255, 0.1), inset 0
-    0 20px rgba(0, 255, 255, 0.05);
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.4), 0 0 20px rgba(0, 255, 255, 0.2), 0 0 40px rgba(0, 255, 255, 0.1), inset 0 0 20px rgba(0, 255, 255, 0.05);
 }
 
 .neon-glow-magenta {
-  box-shadow: 0 0 10px rgba(255, 0, 255, 0.4), 0 0 20px rgba(255, 0, 255, 0.2), 0 0 40px rgba(255, 0, 255, 0.1), inset 0
-    0 20px rgba(255, 0, 255, 0.05);
+  box-shadow: 0 0 10px rgba(255, 0, 255, 0.4), 0 0 20px rgba(255, 0, 255, 0.2), 0 0 40px rgba(255, 0, 255, 0.1), inset 0 0 20px rgba(255, 0, 255, 0.05);
 }
 
 .neon-text-cyan {
@@ -186,11 +248,13 @@
 
 /* Pulse Animation */
 @keyframes pulse-glow {
+
   0%,
   100% {
     opacity: 1;
     box-shadow: 0 0 10px currentColor;
   }
+
   50% {
     opacity: 0.6;
     box-shadow: 0 0 20px currentColor;
@@ -206,6 +270,7 @@
   0% {
     top: -10%;
   }
+
   100% {
     top: 110%;
   }
@@ -233,10 +298,12 @@
 
 /* Holographic Effect */
 @keyframes hologram {
+
   0%,
   100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.8;
   }
@@ -248,10 +315,12 @@
 
 /* Floating Animation */
 @keyframes float {
+
   0%,
   100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-10px);
   }

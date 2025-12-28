@@ -25,6 +25,25 @@ export function FuturisticCard({
   const cardRef = useRef<HTMLDivElement>(null)
   const glowRef = useRef<HTMLDivElement>(null)
   const borderRef = useRef<HTMLDivElement>(null)
+  const [isDarkMode, setIsDarkMode] = useState(false)
+
+  // Detect dark mode
+  useEffect(() => {
+    const checkDarkMode = () => {
+      setIsDarkMode(document.documentElement.classList.contains('dark'))
+    }
+    
+    checkDarkMode()
+    
+    // Watch for theme changes
+    const observer = new MutationObserver(checkDarkMode)
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    })
+    
+    return () => observer.disconnect()
+  }, [])
   const topLeftLineH = useRef<HTMLDivElement>(null)
   const topLeftLineV = useRef<HTMLDivElement>(null)
   const bottomRightLineH = useRef<HTMLDivElement>(null)
@@ -203,12 +222,17 @@ export function FuturisticCard({
     <div
       ref={cardRef}
       className={cn(
-        "group relative overflow-hidden rounded-2xl bg-[#0a0f1a]/90 backdrop-blur-xl p-6",
-        "border border-white/[0.08] transition-colors duration-500",
-        "hover:border-white/[0.15]",
+        "group relative overflow-hidden rounded-2xl backdrop-blur-3xl p-6",
+        "bg-white/30 shadow-2xl", // Light mode - border via inline style
+        "dark:bg-card/95 dark:shadow-none dark:border-white/[0.08]", // Dark mode - border color only
+        "transition-all duration-500",
+        "hover:border-primary/50 hover:shadow-[0_0_30px_rgba(0,200,255,0.3)]",
         className,
       )}
-      style={{ transformStyle: "preserve-3d" }}
+      style={{ 
+        transformStyle: "preserve-3d",
+        border: '2px solid #E5E7EB !important' // Force light gray border with !important
+      } as React.CSSProperties}
       {...props}
     >
       {/* Animated border gradient overlay */}

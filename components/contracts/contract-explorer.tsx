@@ -59,7 +59,7 @@ export function ContractExplorer() {
               placeholder="Enter contract address (e.g., inj1...)"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              className="h-12 border-white/[0.08] bg-white/[0.02] pl-12 font-mono text-sm focus:border-fuchsia-500/50"
+              className="h-12 border-fuchsia-500/30 bg-white/[0.02] pl-12 font-mono text-sm focus:border-fuchsia-500/50"
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             />
             <FileCode className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
@@ -170,7 +170,7 @@ export function ContractExplorer() {
                                     [`${func.name}-${input.name}`]: e.target.value,
                                   }))
                                 }
-                                className="font-mono text-sm border-white/[0.08] bg-white/[0.02]"
+                                className="font-mono text-sm border-cyan-500/30 bg-white/[0.02]"
                               />
                             </div>
                           ))}

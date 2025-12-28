@@ -338,7 +338,7 @@ export function NetworkStatus() {
           {systemStatus.map((system) => (
             <div
               key={system.label}
-              className="flex items-center gap-4 rounded-lg bg-white/[0.02] border border-white/[0.05] p-4 transition-all duration-300 hover:bg-white/[0.05] hover:border-cyan-500/30"
+              className="flex items-center gap-4 rounded-lg bg-white/[0.02] border border-cyan-500/30 p-4 transition-all duration-300 hover:bg-white/[0.05] hover:border-cyan-500/50"
             >
               <div
                 className={cn(

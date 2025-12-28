@@ -92,42 +92,42 @@ export function BentoLiveData() {
 
         <div className="flex-1 space-y-6">
           {/* TPS */}
-          <div className="rounded-xl border border-white/[0.05] bg-white/[0.02] p-4">
+          <div className="rounded-xl border border-cyan-500/30 bg-white/[0.02] p-4">
             <div className="mb-2 flex items-center gap-2">
               <TrendingUp className="h-4 w-4 text-cyan-400" />
-              <span className="text-xs uppercase tracking-wider text-slate-500">Transactions/sec</span>
+              <span className="text-xs uppercase tracking-wider text-muted-foreground">Transactions/sec</span>
             </div>
-            <span ref={tpsRef} className="text-3xl font-bold text-white">
+            <span ref={tpsRef} className="text-3xl font-bold text-foreground">
               {loading ? "..." : "0"}
             </span>
           </div>
 
           {/* Validators */}
-          <div className="rounded-xl border border-white/[0.05] bg-white/[0.02] p-4">
+          <div className="rounded-xl border border-fuchsia-500/30 bg-white/[0.02] p-4">
             <div className="mb-2 flex items-center gap-2">
               <Cpu className="h-4 w-4 text-fuchsia-400" />
-              <span className="text-xs uppercase tracking-wider text-slate-500">Active Validators</span>
+              <span className="text-xs uppercase tracking-wider text-muted-foreground">Active Validators</span>
             </div>
-            <span ref={validatorsRef} className="text-3xl font-bold text-white">
+            <span ref={validatorsRef} className="text-3xl font-bold text-foreground">
               {loading ? "..." : "0"}
             </span>
           </div>
 
           {/* Uptime */}
-          <div className="rounded-xl border border-white/[0.05] bg-white/[0.02] p-4">
+          <div className="rounded-xl border border-emerald-500/30 bg-white/[0.02] p-4">
             <div className="mb-2 flex items-center gap-2">
               <Wifi className="h-4 w-4 text-emerald-400" />
-              <span className="text-xs uppercase tracking-wider text-slate-500">Network Uptime</span>
+              <span className="text-xs uppercase tracking-wider text-muted-foreground">Network Uptime</span>
             </div>
-            <span ref={uptimeRef} className="text-3xl font-bold text-white">
+            <span ref={uptimeRef} className="text-3xl font-bold text-foreground">
               {loading ? "..." : "0%"}
             </span>
-            <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-slate-800">
+            <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-muted">
               <div ref={barRef} className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-emerald-500" style={{ width: '0%' }} />
             </div>
           </div>
 
-          <span className="text-xs text-white/50 text-center">
+          <span className="text-xs text-muted-foreground text-center">
               All data is real from API
             </span>
         </div>

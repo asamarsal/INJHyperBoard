@@ -268,7 +268,7 @@ export function CostCalculator() {
                 "rounded-xl p-3 sm:p-4 text-left transition-all duration-300 border touch-manipulation",
                 selectedAction === action.id
                   ? "bg-cyan-500/10 border-cyan-500/50 shadow-[0_0_20px_rgba(0,255,255,0.2)]"
-                  : "bg-white/[0.02] border-white/[0.08] hover:bg-white/[0.05] hover:border-white/[0.15] active:bg-white/[0.08]",
+                  : "bg-white/[0.02] border-cyan-500/30 hover:bg-white/[0.05] hover:border-cyan-500/50 active:bg-white/[0.08]",
               )}
             >
               <div

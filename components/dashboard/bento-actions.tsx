@@ -102,7 +102,11 @@ function ActionItem({ action, index }: ActionItemProps) {
     <Link
       ref={itemRef}
       href={action.href}
-      className="group flex items-center justify-between rounded-xl border border-white/[0.05] bg-white/[0.02] p-4 transition-all duration-300 hover:border-white/[0.1] hover:bg-white/[0.05]"
+      className={`group flex items-center justify-between rounded-xl border p-4 transition-all duration-300 bg-white/[0.02] ${
+        action.glowColor === "cyan"
+          ? "border-cyan-500/30 hover:border-cyan-500/50 hover:bg-cyan-500/5"
+          : "border-fuchsia-500/30 hover:border-fuchsia-500/50 hover:bg-fuchsia-500/5"
+      }`}
     >
       <div className="flex items-center gap-3">
         <div
@@ -115,12 +119,12 @@ function ActionItem({ action, index }: ActionItemProps) {
           <action.icon className={`h-5 w-5 ${action.glowColor === "cyan" ? "text-cyan-400" : "text-fuchsia-400"}`} />
         </div>
         <div>
-          <p className="font-medium text-white">{action.title}</p>
-          <p className="text-xs text-slate-500">{action.description}</p>
+          <p className="font-medium text-foreground">{action.title}</p>
+          <p className="text-xs text-muted-foreground">{action.description}</p>
         </div>
       </div>
       <div ref={arrowRef} className="opacity-50">
-        <ChevronRight className="h-5 w-5 text-slate-400" />
+        <ChevronRight className="h-5 w-5 text-muted-foreground" />
       </div>
     </Link>
   )
@@ -130,7 +134,7 @@ export function BentoActions() {
   return (
     <BentoCard glowColor="purple" size="md" delay={0.5} className="md:col-span-2 md:row-span-2">
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="font-[var(--font-orbitron)] text-lg font-bold text-white">Quick Actions</h3>
+        <h3 className="font-[var(--font-orbitron)] text-lg font-bold text-foreground">Quick Actions</h3>
         <span className="rounded-full border border-violet-500/30 bg-violet-500/10 px-3 py-1 text-xs text-violet-400">
           6 Features
         </span>

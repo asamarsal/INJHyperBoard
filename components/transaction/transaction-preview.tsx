@@ -57,7 +57,7 @@ export function TransactionPreview() {
                 value={txHash}
                 onChange={(e) => setTxHash(e.target.value)}
                 placeholder="Enter transaction hash or paste simulated parameters..."
-                className="w-full rounded-lg border border-white/[0.08] bg-white/[0.02] px-3 sm:px-4 py-2.5 sm:py-3 pr-10 sm:pr-12 text-sm text-foreground placeholder:text-muted-foreground transition-all duration-300 focus:border-cyan-500/50 focus:outline-none focus:shadow-[0_0_20px_rgba(0,255,255,0.15)]"
+                className="w-full rounded-lg border border-cyan-500/30 bg-white/[0.02] px-3 sm:px-4 py-2.5 sm:py-3 pr-10 sm:pr-12 text-sm text-foreground placeholder:text-muted-foreground transition-all duration-300 focus:border-cyan-500/50 focus:outline-none focus:shadow-[0_0_20px_rgba(0,255,255,0.15)]"
               />
               <Search className="absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             </div>
@@ -86,7 +86,7 @@ export function TransactionPreview() {
               Transaction Parties
             </h3>
             <div className="space-y-4">
-              <div className="rounded-lg bg-white/[0.02] border border-white/[0.05] p-4">
+              <div className="rounded-lg bg-white/[0.02] border border-black dark:border-white/[0.05] p-4">
                 <p className="text-xs text-muted-foreground">Sender</p>
                 <p className="mt-1 font-mono text-sm text-foreground">{transaction.sender}</p>
               </div>
@@ -95,7 +95,7 @@ export function TransactionPreview() {
                   <ArrowRight className="h-4 w-4 text-cyan-400" />
                 </div>
               </div>
-              <div className="rounded-lg bg-white/[0.02] border border-white/[0.05] p-4">
+              <div className="rounded-lg bg-white/[0.02] border border-black dark:border-white/[0.05] p-4">
                 <p className="text-xs text-muted-foreground">Receiver</p>
                 <p className="mt-1 font-mono text-sm text-foreground">{transaction.receiver}</p>
               </div>
@@ -108,14 +108,14 @@ export function TransactionPreview() {
               Transfer Details
             </h3>
             <div className="space-y-4">
-              <div className="rounded-lg bg-white/[0.02] border border-white/[0.05] p-4">
+              <div className="rounded-lg bg-white/[0.02] border border-black dark:border-white/[0.05] p-4">
                 <p className="text-xs text-muted-foreground">Amount</p>
                 <p className="mt-1 text-2xl font-bold text-foreground">
                   {transaction.amount} <span className="text-fuchsia-400">{transaction.token}</span>
                 </p>
               </div>
               <div className="grid grid-cols-2 gap-4">
-                <div className="rounded-lg bg-white/[0.02] border border-white/[0.05] p-4">
+                <div className="rounded-lg bg-white/[0.02] border border-black dark:border-white/[0.05] p-4">
                   <div className="flex items-center gap-2">
                     <Fuel className="h-4 w-4 text-muted-foreground" />
                     <p className="text-xs text-muted-foreground">Gas Estimate</p>
@@ -123,7 +123,7 @@ export function TransactionPreview() {
                   <p className="mt-1 text-sm font-medium text-foreground">{transaction.gasEstimate}</p>
                   <p className="text-xs text-muted-foreground">{transaction.gasCost}</p>
                 </div>
-                <div className="rounded-lg bg-white/[0.02] border border-white/[0.05] p-4">
+                <div className="rounded-lg bg-white/[0.02] border border-black dark:border-white/[0.05] p-4">
                   <div className="flex items-center gap-2">
                     <Clock className="h-4 w-4 text-muted-foreground" />
                     <p className="text-xs text-muted-foreground">Status</p>

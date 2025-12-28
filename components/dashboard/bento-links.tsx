@@ -108,7 +108,11 @@ function LinkItem({ link, index }: LinkItemProps) {
       href={link.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex items-center gap-2.5 rounded-lg border border-white/[0.05] bg-white/[0.02] p-2.5 transition-all duration-300 hover:border-white/[0.1] hover:bg-white/[0.05]"
+      className={`group flex items-center gap-2.5 rounded-lg border p-2.5 transition-all duration-300 bg-white/[0.02] ${
+        link.glowColor === "cyan"
+          ? "border-cyan-500/30 hover:border-cyan-500/50 hover:bg-cyan-500/5"
+          : "border-fuchsia-500/30 hover:border-fuchsia-500/50 hover:bg-fuchsia-500/5"
+      }`}
     >
       <div
         ref={iconRef}
@@ -121,10 +125,10 @@ function LinkItem({ link, index }: LinkItemProps) {
         <link.icon className={`h-3.5 w-3.5 ${link.glowColor === "cyan" ? "text-cyan-400" : "text-fuchsia-400"}`} />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-xs font-medium text-white truncate">{link.title}</p>
-        <p className="text-[10px] leading-tight text-slate-500">{link.description}</p>
+        <p className="text-xs font-medium text-foreground truncate">{link.title}</p>
+        <p className="text-[10px] leading-tight text-muted-foreground">{link.description}</p>
       </div>
-      <ExternalLink className="h-3 w-3 flex-shrink-0 text-slate-400 opacity-0 transition-opacity group-hover:opacity-100" />
+      <ExternalLink className="h-3 w-3 flex-shrink-0 text-cyan-400 transition-transform group-hover:translate-x-0.5" />
     </a>
   )
 }
@@ -149,7 +153,7 @@ export function BentoLinks() {
   return (
     <BentoCard glowColor="purple" size="md" delay={0.7} className="md:col-span-1 md:row-span-2">
       <div className="mb-3">
-        <h3 className="font-[var(--font-orbitron)] text-base font-bold text-white">Resources & Community</h3>
+        <h3 className="font-[var(--font-orbitron)] text-base font-bold text-foreground">Resources & Community</h3>
       </div>
 
       {/* Documentation Links */}

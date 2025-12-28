@@ -6,12 +6,12 @@ export function Footer({ isCollapsed = false }: FooterProps) {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className={`border-t border-white/[0.05] bg-[#030712]/95 backdrop-blur-sm mt-12 transition-[margin] duration-500 ease-in-out ${isCollapsed ? 'md:ml-20' : 'md:ml-64'}`}>
+    <footer className={`border-t border-border bg-background/95 backdrop-blur-sm mt-12 transition-[margin] duration-500 ease-in-out ${isCollapsed ? 'md:ml-20' : 'md:ml-64'}`}>
       <div className="px-6 py-6">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           {/* Copyright */}
           <div className="text-center sm:text-left">
-            <p className="text-sm text-slate-300">
+            <p className="text-sm text-foreground">
               © {currentYear}{" "}
               <a 
                 href="https://linktr.ee/asamarsal" 
@@ -26,7 +26,7 @@ export function Footer({ isCollapsed = false }: FooterProps) {
           </div>
 
           {/* Additional Info */}
-          <div className="flex items-center gap-4 text-xs text-slate-400">
+          <div className="flex items-center gap-4 text-xs text-foreground">
             <span>Built with Next.js</span>
             <span className="">|</span>
             <span className="flex items-center gap-1">

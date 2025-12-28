@@ -212,7 +212,7 @@ export function ChatInterface() {
 
         {/* Input */}
         <form onSubmit={handleSubmit} className="border-t border-white/[0.08] p-4 bg-white/[0.02]">
-          <div className="flex items-center gap-3 rounded-xl border border-white/[0.08] bg-white/[0.02] px-4 py-2 transition-all duration-300 focus-within:border-cyan-500/50 focus-within:shadow-[0_0_20px_rgba(0,255,255,0.15)]">
+          <div className="flex items-center gap-3 rounded-xl border border-cyan-500/30 bg-white/[0.02] px-4 py-2 transition-all duration-300 focus-within:border-cyan-500/50 focus-within:shadow-[0_0_20px_rgba(0,255,255,0.15)]">
             <input
               type="text"
               value={input}

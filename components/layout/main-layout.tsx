@@ -33,10 +33,10 @@ function MainLayoutContent({ children }: { children: React.ReactNode }) {
   }, [lastScrollY])
 
   return (
-    <div className="min-h-screen bg-[#030712] cyber-grid">
-      {/* Ambient glow effects */}
-      <div className="pointer-events-none fixed left-1/4 top-0 h-[500px] w-[500px] rounded-full bg-cyan-500/[0.03] blur-[100px]" />
-      <div className="pointer-events-none fixed bottom-0 right-1/4 h-[400px] w-[400px] rounded-full bg-fuchsia-500/[0.03] blur-[100px]" />
+    <div className="min-h-screen bg-background transition-colors duration-300">
+      {/* Ambient glow effects - only visible in dark mode */}
+      <div className="pointer-events-none fixed left-1/4 top-0 h-[500px] w-[500px] rounded-full bg-cyan-500/[0.03] dark:bg-cyan-500/[0.03] blur-[100px] opacity-0 dark:opacity-100 transition-opacity" />
+      <div className="pointer-events-none fixed bottom-0 right-1/4 h-[400px] w-[400px] rounded-full bg-fuchsia-500/[0.03] dark:bg-fuchsia-500/[0.03] blur-[100px] opacity-0 dark:opacity-100 transition-opacity" />
 
       <Sidebar />
       

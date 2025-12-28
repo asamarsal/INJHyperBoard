@@ -122,7 +122,7 @@ export function WalletViewer() {
                 placeholder="Enter wallet address (e.g., inj1...)"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                className="h-12 border-white/[0.08] bg-white/[0.02] pl-12 font-mono text-sm focus:border-cyan-500/50"
+                className="h-12 border-cyan-500/30 bg-white/[0.02] pl-12 font-mono text-sm focus:border-cyan-500/50"
                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                 disabled={loading}
               />

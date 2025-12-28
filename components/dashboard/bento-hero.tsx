@@ -169,7 +169,7 @@ export function BentoHero() {
         </div>
 
         <div className="mt-4 sm:mt-6">
-          <p className="text-xs sm:text-sm leading-relaxed text-slate-300 line-clamp-3 sm:line-clamp-none">
+          <p className="text-xs sm:text-sm leading-relaxed text-foreground line-clamp-3 sm:line-clamp-none">
             Experience the future of decentralized finance with Injective. Lightning-fast transactions, near-zero fees,
             and unlimited DeFi possibilities powered by AI assistance.
           </p>

@@ -67,9 +67,9 @@ function StatItem({ icon: Icon, label, value, subtitle, trend, glowColor, delay 
         <Icon className={`${compact ? 'h-4 w-4' : 'h-6 w-6'} ${glowColor === "cyan" ? "text-cyan-400" : "text-fuchsia-400"}`} />
       </div>
       <div className="flex-1">
-        <p className={`${compact ? 'text-[10px]' : 'text-xs'} uppercase tracking-wider text-slate-500`}>{label}</p>
+        <p className={`${compact ? 'text-[10px]' : 'text-xs'} uppercase tracking-wider text-muted-foreground`}>{label}</p>
         <div className="flex items-center gap-2">
-          <span ref={valueRef} className={`${compact ? 'text-sm' : 'text-xl'} font-bold text-white`}>
+          <span ref={valueRef} className={`${compact ? 'text-sm' : 'text-xl'} font-bold text-foreground`}>
             {value}
           </span>
           {trend && (
@@ -80,7 +80,7 @@ function StatItem({ icon: Icon, label, value, subtitle, trend, glowColor, delay 
             />
           )}
         </div>
-        {subtitle && <p className={`${compact ? 'text-[10px]' : 'text-xs'} text-slate-500`}>{subtitle}</p>}
+        {subtitle && <p className={`${compact ? 'text-[10px]' : 'text-xs'} text-muted-foreground`}>{subtitle}</p>}
       </div>
     </div>
   )
@@ -161,9 +161,9 @@ export function BentoStats() {
           {address ? (
             <div className="flex flex-col gap-3">
               <div>
-                <p className="text-xs text-slate-500 mb-1">Connected</p>
+                <p className="text-xs text-muted-foreground mb-1">Connected</p>
                 <div className="flex items-center gap-2">
-                  <p className="text-sm text-white font-mono">{shortenAddress(address)}</p>
+                  <p className="text-sm text-foreground font-mono">{shortenAddress(address)}</p>
                   <button
                     onClick={handleCopy}
                     className="text-cyan-400 hover:text-cyan-300 transition-colors"
@@ -190,8 +190,8 @@ export function BentoStats() {
           ) : (
             <div className="flex flex-col gap-3">
               <div>
-                <p className="text-xs text-slate-500 mb-1">Connect your wallet</p>
-                <p className="text-sm text-white font-semibold">Get started with Injective</p>
+                <p className="text-xs text-muted-foreground mb-1">Connect your wallet</p>
+                <p className="text-sm text-foreground font-semibold">Get started with Injective</p>
               </div>
               <Button 
                 onClick={connectWallet}

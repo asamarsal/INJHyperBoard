@@ -23,6 +23,7 @@ import {
   Layers, // Added for Ecosystem
 } from "lucide-react"
 import { RobotAvatar } from "@/components/ui/robot-avatar"
+import { ThemeToggle } from "@/components/ui/theme-toggle"
 
 import { useSidebar } from "@/components/providers/sidebar-provider"
 
@@ -129,7 +130,7 @@ export function Sidebar() {
   return (
     <>
       {/* Mobile Top Navbar */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-[#030712]/95 backdrop-blur-md border-b border-white/[0.05]">
+      <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-white/[0.05]">
         <div className="flex items-center justify-between px-4 py-3">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-4">
@@ -148,7 +149,7 @@ export function Sidebar() {
 
         {/* Mobile Menu Dropdown */}
         <div ref={mobileMenuRef} className="overflow-hidden" style={{ height: 0, opacity: 0 }}>
-          <nav className="border-t border-white/[0.05] bg-[#030712] px-4 py-4">
+          <nav className="border-t border-white/[0.05] bg-background px-4 py-4">
             <div className="space-y-2">
               {navItems.map((item) => {
                 const isActive = pathname === item.href
@@ -160,7 +161,7 @@ export function Sidebar() {
                       "flex items-center gap-3 rounded-lg px-4 py-3 transition-all duration-300",
                       isActive
                         ? "bg-pink-500/10 text-pink-400 shadow-[0_0_20px_rgba(236,72,153,0.15)]"
-                        : "text-slate-400 hover:bg-white/[0.05] hover:text-foreground"
+                        : "text-red hover:bg-white/[0.05] hover:text-foreground"
                     )}
                   >
                     <item.icon className="h-5 w-5" />
@@ -177,7 +178,7 @@ export function Sidebar() {
       <aside
         ref={sidebarRef}
         className={cn(
-          "hidden md:block fixed left-0 top-0 z-40 h-screen border-r border-white/[0.05] bg-[#030712]/95 backdrop-blur-xl",
+          "hidden md:block fixed left-0 top-0 z-40 h-screen transition-all duration-500 bg-background border-r border-border",
           isCollapsed ? "w-20" : "w-64"
         )}
       >
@@ -213,7 +214,7 @@ export function Sidebar() {
           <button
             ref={toggleButtonRef}
             onClick={toggleSidebar}
-            className="absolute -right-3 top-24 z-50 flex h-6 w-6 items-center justify-center rounded-full border border-pink-500/50 bg-slate-900 text-pink-400 shadow-[0_0_10px_rgba(236,72,153,0.3)] transition-all hover:bg-pink-500/20 hover:shadow-[0_0_20px_rgba(236,72,153,0.5)]"
+            className="absolute -right-3 top-24 z-50 flex h-6 w-6 items-center justify-center rounded-full border border-pink-500/50 bg-transparent text-pink-400 shadow-[0_0_10px_rgba(236,72,153,0.3)] transition-all hover:bg-pink-500/20 hover:shadow-[0_0_20px_rgba(236,72,153,0.5)]"
           >
             {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
           </button>
@@ -241,7 +242,7 @@ export function Sidebar() {
                   className={cn(
                     "group relative flex items-center rounded-xl text-sm font-medium transition-all duration-300",
                     isCollapsed ? "justify-center px-2 py-3" : "gap-3 px-4 py-3",
-                    isActive ? "bg-pink-500/10 text-pink-400" : "text-slate-400 hover:bg-white/[0.03] hover:text-white"
+                    isActive ? "bg-pink-500/10 text-pink-400" : "text-black/70 dark:text-slate-400 hover:bg-white/[0.03] dark:hover:bg-white/[0.03] hover:text-foreground"
                   )}
                 >
                   {isActive && (
@@ -269,7 +270,11 @@ export function Sidebar() {
 
           {/* Footer */}
           <div className={cn("border-t border-white/[0.05]", isCollapsed ? "p-2" : "p-4")}>
-            <div className={cn("rounded-xl border border-white/[0.05] bg-white/[0.02]", isCollapsed ? "p-2" : "p-4")}>
+            {/* Theme Toggle */}
+            <ThemeToggle isCollapsed={isCollapsed} />
+            
+            {/* Network Status */}
+            <div className={cn("rounded-xl border border-white/[0.05] bg-white/[0.02] mt-2", isCollapsed ? "p-2" : "p-4")}>
               <div className={cn("flex items-center", isCollapsed ? "justify-center" : "justify-between")}>
                 <div className="flex items-center gap-2">
                   <div className="h-2 w-2 animate-pulse rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.8)]" />

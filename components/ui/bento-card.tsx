@@ -30,6 +30,23 @@ export function BentoCard({
     const border = borderRef.current
     if (!card || !glow || !border) return
 
+    // Force black border in light mode
+    const updateBorder = () => {
+      const isDark = document.documentElement.classList.contains('dark')
+      if (card) {
+        card.style.borderColor = isDark ? 'rgba(255, 255, 255, 0.08)' : '#000000'
+      }
+    }
+    
+    updateBorder()
+    
+    // Watch for theme changes
+    const observer = new MutationObserver(updateBorder)
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    })
+
     // Initial animation
     gsap.fromTo(
       card,
@@ -100,6 +117,7 @@ export function BentoCard({
     return () => {
       card.removeEventListener("mousemove", handleMouseMove)
       card.removeEventListener("mouseleave", handleMouseLeave)
+      observer.disconnect()
     }
   }, [delay])
 
@@ -119,15 +137,21 @@ export function BentoCard({
     <div
       ref={cardRef}
       className={cn(
-        "group relative overflow-hidden rounded-2xl bg-[#0a0f1a]/80 backdrop-blur-xl",
-        "border border-white/[0.08] transition-all duration-500",
+        "group relative overflow-hidden rounded-2xl backdrop-blur-3xl",
+        "bg-white/30 shadow-2xl", // Light mode - border via inline style
+        "dark:bg-card/90 dark:shadow-none dark:border-white/[0.08]", // Dark mode - border color only
+        "transition-all duration-500",
+        "hover:shadow-[0_0_30px_rgba(0,200,255,0.2)]",
         size === "sm" && "p-4",
         size === "md" && "p-6",
         size === "lg" && "p-8",
         size === "xl" && "p-10",
         className,
       )}
-      style={{ transformStyle: "preserve-3d" }}
+      style={{ 
+        transformStyle: "preserve-3d",
+        border: '2px solid #E5E7EB !important' // Force light gray border with !important
+      } as React.CSSProperties}
       {...props}
     >
       {/* Animated border gradient */}

@@ -76,10 +76,10 @@ export default function EcosystemPage() {
         {/* Header */}
         <div className="space-y-4">
           <div>
-            <h1 className="font-[var(--font-orbitron)] text-3xl font-bold text-white sm:text-4xl">
+            <h1 className="font-[var(--font-orbitron)] text-3xl font-bold text-foreground sm:text-4xl">
               Injective Ecosystem
             </h1>
-            <p className="mt-2 text-slate-400">
+            <p className="mt-2 text-muted-foreground">
               Explore the thriving ecosystem of dApps built on Injective
             </p>
           </div>
@@ -88,18 +88,18 @@ export default function EcosystemPage() {
           <div className="grid gap-4 sm:grid-cols-3">
             <FuturisticCard glowColor="cyan" delay={0.1} className="text-center">
               <Rocket className="mx-auto h-8 w-8 text-cyan-400" />
-              <p className="mt-2 text-2xl font-bold text-white">100+</p>
-              <p className="text-sm text-slate-400">dApps</p>
+              <p className="mt-2 text-2xl font-bold text-foreground">100+</p>
+              <p className="text-sm text-muted-foreground">dApps</p>
             </FuturisticCard>
             <FuturisticCard glowColor="magenta" delay={0.15} className="text-center">
               <Users className="mx-auto h-8 w-8 text-fuchsia-400" />
-              <p className="mt-2 text-2xl font-bold text-white">100K+</p>
-              <p className="text-sm text-slate-400">Active Users</p>
+              <p className="mt-2 text-2xl font-bold text-foreground">100K+</p>
+              <p className="text-sm text-muted-foreground">Active Users</p>
             </FuturisticCard>
             <FuturisticCard glowColor="emerald" delay={0.2} className="text-center">
               <TrendingUp className="mx-auto h-8 w-8 text-emerald-400" />
-              <p className="mt-2 text-2xl font-bold text-white">$1B+</p>
-              <p className="text-sm text-slate-400">Total Volume</p>
+              <p className="mt-2 text-2xl font-bold text-foreground">$1B+</p>
+              <p className="text-sm text-muted-foreground">Total Volume</p>
             </FuturisticCard>
           </div>
         </div>
@@ -114,7 +114,7 @@ export default function EcosystemPage() {
                 className={`rounded-lg px-4 py-2 text-sm font-medium transition-all duration-300 ${
                   selectedCategory === category
                     ? "bg-cyan-500/20 text-cyan-400 shadow-[0_0_15px_rgba(0,255,255,0.3)]"
-                    : "bg-white/[0.02] text-slate-400 hover:bg-white/[0.05] hover:text-white"
+                    : "bg-white/[0.02] text-muted-foreground hover:bg-white/[0.05] hover:text-foreground"
                 }`}
               >
                 {category}
@@ -127,7 +127,7 @@ export default function EcosystemPage() {
             href="https://injhub.com/ecosystem"
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center gap-2 rounded-xl bg-white/[0.05] backdrop-blur-md border border-white/[0.1] px-6 py-3 font-semibold text-white transition-all duration-300 hover:bg-white/[0.1] hover:shadow-[0_0_30px_rgba(0,255,255,0.3)]"
+            className="group flex items-center gap-2 rounded-xl bg-white/[0.05] backdrop-blur-md border border-black dark:border-white/[0.1] px-6 py-3 font-semibold text-foreground transition-all duration-300 hover:bg-white/[0.1] hover:shadow-[0_0_30px_rgba(0,255,255,0.3)]"
           >
             <span>Explore All</span>
             <ExternalLink className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -152,18 +152,18 @@ export default function EcosystemPage() {
                   />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-white">{dapp.name}</h3>
-                  <p className="mt-1 text-xs text-slate-500">{dapp.category}</p>
+                  <h3 className="font-semibold text-foreground">{dapp.name}</h3>
+                  <p className="mt-1 text-xs text-muted-foreground">{dapp.category}</p>
                 </div>
               </div>
 
               {dapp.featured && (
-                <div className="mt-3 inline-flex items-center rounded-full bg-white/[0.1] backdrop-blur-md border border-white/[0.2] px-3 py-1 text-xs font-semibold text-white shadow-lg">
+                <div className="mt-3 inline-flex items-center rounded-full bg-white/[0.1] backdrop-blur-md border border-black dark:border-white/[0.2] px-3 py-1 text-xs font-semibold text-foreground shadow-lg">
                   Featured
                 </div>
               )}
 
-              <p className="mt-4 text-sm leading-relaxed text-slate-400">
+              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
                 {dapp.description}
               </p>
 
@@ -183,7 +183,7 @@ export default function EcosystemPage() {
         {/* Empty State */}
         {filteredDapps.length === 0 && (
           <div className="py-12 text-center">
-            <p className="text-slate-400">No dApps found in this category</p>
+            <p className="text-muted-foreground">No dApps found in this category</p>
           </div>
         )}
       </div>
