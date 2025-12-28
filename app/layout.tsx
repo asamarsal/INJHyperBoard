@@ -3,7 +3,6 @@ import type { Metadata } from "next"
 import { Orbitron, Inter } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { SidebarProvider } from "@/components/providers/sidebar-provider"
-import { WalletProvider } from "@/contexts/wallet-context"
 import "./globals.css"
 
 const orbitron = Orbitron({
@@ -37,11 +36,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={`${orbitron.variable} ${inter.variable} font-sans antialiased`}>
-        <WalletProvider>
-          <SidebarProvider>
-            {children}
-          </SidebarProvider>
-        </WalletProvider>
+        <SidebarProvider>
+          {children}
+        </SidebarProvider>
         <Analytics />
       </body>
     </html>
