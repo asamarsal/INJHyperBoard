@@ -2,10 +2,13 @@
 
 import type React from "react"
 
-import { useRef, useEffect } from "react"
+import { useRef, useEffect, useState } from "react"
 import { gsap } from "gsap"
 import { BentoCard } from "@/components/ui/bento-card"
-import { Activity, Fuel, Blocks, TrendingUp, Zap } from "lucide-react"
+import { Activity, Fuel, Blocks, TrendingUp, Zap, Wallet, Copy, Check } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { useWallet } from "@/contexts/wallet-context"
+import { WalletConnectModal } from "@/components/wallet/wallet-connect-modal"
 
 interface StatItemProps {
   icon: React.ElementType
@@ -15,9 +18,10 @@ interface StatItemProps {
   trend?: "up" | "down" | "neutral"
   glowColor: "cyan" | "magenta"
   delay?: number
+  compact?: boolean
 }
 
-function StatItem({ icon: Icon, label, value, subtitle, trend, glowColor, delay = 0 }: StatItemProps) {
+function StatItem({ icon: Icon, label, value, subtitle, trend, glowColor, delay = 0, compact = false }: StatItemProps) {
   const valueRef = useRef<HTMLSpanElement>(null)
   const iconRef = useRef<HTMLDivElement>(null)
 
@@ -44,21 +48,21 @@ function StatItem({ icon: Icon, label, value, subtitle, trend, glowColor, delay 
   }, [delay])
 
   return (
-    <div className="flex items-center gap-4">
+    <div className={`flex items-center ${compact ? 'gap-2' : 'gap-4'}`}>
       <div
         ref={iconRef}
-        className={`flex h-12 w-12 items-center justify-center rounded-xl ${
+        className={`flex ${compact ? 'h-8 w-8' : 'h-12 w-12'} items-center justify-center rounded-xl ${
           glowColor === "cyan"
             ? "bg-cyan-500/10 shadow-[0_0_20px_rgba(0,255,255,0.2)]"
             : "bg-fuchsia-500/10 shadow-[0_0_20px_rgba(255,0,255,0.2)]"
         }`}
       >
-        <Icon className={`h-6 w-6 ${glowColor === "cyan" ? "text-cyan-400" : "text-fuchsia-400"}`} />
+        <Icon className={`${compact ? 'h-4 w-4' : 'h-6 w-6'} ${glowColor === "cyan" ? "text-cyan-400" : "text-fuchsia-400"}`} />
       </div>
       <div className="flex-1">
-        <p className="text-xs uppercase tracking-wider text-slate-500">{label}</p>
+        <p className={`${compact ? 'text-[10px]' : 'text-xs'} uppercase tracking-wider text-slate-500`}>{label}</p>
         <div className="flex items-center gap-2">
-          <span ref={valueRef} className="text-xl font-bold text-white">
+          <span ref={valueRef} className={`${compact ? 'text-sm' : 'text-xl'} font-bold text-white`}>
             {value}
           </span>
           {trend && (
@@ -69,16 +73,109 @@ function StatItem({ icon: Icon, label, value, subtitle, trend, glowColor, delay 
             />
           )}
         </div>
-        {subtitle && <p className="text-xs text-slate-500">{subtitle}</p>}
+        {subtitle && <p className={`${compact ? 'text-[10px]' : 'text-xs'} text-slate-500`}>{subtitle}</p>}
       </div>
     </div>
   )
 }
 
 export function BentoStats() {
+  const { address, isConnected, disconnect } = useWallet()
+  const [showModal, setShowModal] = useState(false)
+  const [copied, setCopied] = useState(false)
+
+  const handleCopy = () => {
+    if (address) {
+      navigator.clipboard.writeText(address)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    }
+  }
+
+  const shortenAddress = (addr: string) => {
+    return `${addr.substring(0, 10)}...${addr.substring(addr.length - 6)}`
+  }
+
   return (
     <>
+      {/* Connect Wallet Card */}
       <BentoCard glowColor="cyan" size="md" delay={0.1}>
+        <div className="flex h-full flex-col justify-between">
+          <div className="mb-4 flex items-center justify-between">
+            <span className="text-xs uppercase tracking-wider text-cyan-500/70">Wallet</span>
+            <Wallet className="h-4 w-4 text-cyan-400" />
+          </div>
+          
+          {isConnected && address ? (
+            <div className="flex flex-col gap-3">
+              <div>
+                <p className="text-xs text-slate-500 mb-1">Connected</p>
+                <div className="flex items-center gap-2">
+                  <p className="text-sm text-white font-mono">{shortenAddress(address)}</p>
+                  <button
+                    onClick={handleCopy}
+                    className="text-cyan-400 hover:text-cyan-300 transition-colors"
+                    title="Copy address"
+                  >
+                    {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+                  </button>
+                </div>
+              </div>
+              <Button 
+                onClick={disconnect}
+                className="w-full bg-rose-500/20 text-rose-400 border border-rose-500/30 hover:bg-rose-500/30"
+              >
+                Disconnect
+              </Button>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-3">
+              <div>
+                <p className="text-xs text-slate-500 mb-1">Connect your wallet</p>
+                <p className="text-sm text-white font-semibold">Get started with Injective</p>
+              </div>
+              <Button 
+                onClick={() => setShowModal(true)}
+                className="w-full bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/30 hover:shadow-[0_0_20px_rgba(0,255,255,0.3)]"
+              >
+                <Wallet className="h-4 w-4 mr-2" />
+                Connect Wallet
+              </Button>
+            </div>
+          )}
+        </div>
+      </BentoCard>
+
+      {/* Performance Card - Merged Gas Price + Block Time (LEFT) */}
+      <BentoCard glowColor="magenta" size="md" delay={0.2}>
+        <div className="flex h-full flex-col justify-between">
+          <span className="mb-3 text-xs uppercase tracking-wider text-fuchsia-500/70">Performance</span>
+          <div className="space-y-3">
+            <StatItem
+              icon={Fuel}
+              label="Gas Price"
+              value="0.0001 INJ"
+              subtitle="~$0.002 USD"
+              trend="down"
+              glowColor="magenta"
+              delay={0.2}
+              compact={true}
+            />
+            <StatItem
+              icon={Zap}
+              label="Block Time"
+              value="~1.2s"
+              subtitle="Instant finality"
+              glowColor="magenta"
+              delay={0.3}
+              compact={true}
+            />
+          </div>
+        </div>
+      </BentoCard>
+
+      {/* Network Status Card (RIGHT) */}
+      <BentoCard glowColor="cyan" size="md" delay={0.3}>
         <div className="flex h-full flex-col justify-between">
           <div className="mb-4 flex items-center justify-between">
             <span className="text-xs uppercase tracking-wider text-cyan-500/70">Network</span>
@@ -93,39 +190,13 @@ export function BentoStats() {
             value="Operational"
             subtitle="All systems running"
             glowColor="cyan"
-            delay={0.1}
+            delay={0.3}
           />
         </div>
       </BentoCard>
 
-      <BentoCard glowColor="magenta" size="md" delay={0.2}>
-        <div className="flex h-full flex-col justify-between">
-          <span className="mb-4 text-xs uppercase tracking-wider text-fuchsia-500/70">Gas Price</span>
-          <StatItem
-            icon={Fuel}
-            label="Average"
-            value="0.0001 INJ"
-            subtitle="~$0.002 USD"
-            trend="down"
-            glowColor="magenta"
-            delay={0.2}
-          />
-        </div>
-      </BentoCard>
-
-      <BentoCard glowColor="magenta" size="md" delay={0.4}>
-        <div className="flex h-full flex-col justify-between">
-          <span className="mb-4 text-xs uppercase tracking-wider text-fuchsia-500/70">Performance</span>
-          <StatItem
-            icon={Zap}
-            label="Block Time"
-            value="~1.2s"
-            subtitle="Instant finality"
-            glowColor="magenta"
-            delay={0.4}
-          />
-        </div>
-      </BentoCard>
+      {/* Wallet Connect Modal */}
+      <WalletConnectModal isOpen={showModal} onClose={() => setShowModal(false)} />
     </>
   )
 }

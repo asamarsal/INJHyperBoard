@@ -1,18 +1,25 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
-import { Orbitron } from "next/font/google"
+import { Orbitron, Inter } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { SidebarProvider } from "@/components/providers/sidebar-provider"
+import { WalletProvider } from "@/contexts/wallet-context"
 import "./globals.css"
 
-const _geist = Geist({ subsets: ["latin"] })
-const _geistMono = Geist_Mono({ subsets: ["latin"] })
-const _orbitron = Orbitron({ subsets: ["latin"], variable: "--font-orbitron" })
+const orbitron = Orbitron({
+  subsets: ["latin"],
+  variable: "--font-orbitron",
+  weight: ["400", "500", "600", "700", "800", "900"],
+})
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+})
 
 export const metadata: Metadata = {
-  title: "InjHyperBoard",
-  description: "Next-generation Web3 control interface for Injective blockchain",
+  title: "INJHyperBoard - Injective Blockchain Dashboard",
+  description: "Your unified control center for Injective blockchain tools",
   generator: 'InjHyperBoard',
   icons: {
     icon: '/images/icononly-black.png',
@@ -29,10 +36,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`font-sans antialiased ${_orbitron.variable}`}>
-        <SidebarProvider>
-          {children}
-        </SidebarProvider>
+      <body className={`${orbitron.variable} ${inter.variable} font-sans antialiased`}>
+        <WalletProvider>
+          <SidebarProvider>
+            {children}
+          </SidebarProvider>
+        </WalletProvider>
         <Analytics />
       </body>
     </html>
