@@ -161,7 +161,7 @@ export function Sidebar() {
                       "flex items-center gap-3 rounded-lg px-4 py-3 transition-all duration-300",
                       isActive
                         ? "bg-pink-500/10 text-pink-400 shadow-[0_0_20px_rgba(236,72,153,0.15)]"
-                        : "text-red hover:bg-white/[0.05] hover:text-foreground"
+                        : "text-black/50 dark:text-slate-400 hover:bg-white/[0.05] hover:text-foreground"
                     )}
                   >
                     <item.icon className="h-5 w-5" />
@@ -169,6 +169,11 @@ export function Sidebar() {
                   </Link>
                 )
               })}
+              
+              {/* Theme Toggle in Mobile Menu */}
+              <div className="mt-4 pt-4 border-t border-white/[0.05]">
+                <ThemeToggle />
+              </div>
             </div>
           </nav>
         </div>
