@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Search, ArrowUpRight, ArrowDownLeft, Wallet, Copy, Check, ExternalLink, QrCode, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -49,14 +49,26 @@ export function WalletViewer() {
   const [error, setError] = useState<string | null>(null)
   const [showQR, setShowQR] = useState(false)
 
-  const handleSearch = async () => {
-    if (!address.trim()) return
+  // Auto-fill wallet address if connected
+  useEffect(() => {
+    const connectedAddress = localStorage.getItem('inj_wallet_address')
+    if (connectedAddress && !isLoaded) {
+      setAddress(connectedAddress)
+      // Auto-search after setting address
+      setTimeout(() => {
+        handleSearchWithAddress(connectedAddress)
+      }, 100)
+    }
+  }, [])
+
+  const handleSearchWithAddress = async (searchAddress: string) => {
+    if (!searchAddress.trim()) return
     
     setLoading(true)
     setError(null)
     
     try {
-      const response = await fetch(`/api/wallet?address=${encodeURIComponent(address)}`)
+      const response = await fetch(`/api/wallet?address=${encodeURIComponent(searchAddress)}`)
       const data = await response.json()
       
       console.log('API Response:', data)
@@ -75,6 +87,10 @@ export function WalletViewer() {
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleSearch = async () => {
+    await handleSearchWithAddress(address)
   }
 
   const handleCopy = () => {
