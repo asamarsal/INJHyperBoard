@@ -10,13 +10,13 @@ interface ThemeToggleProps {
 
 export function ThemeToggle({ isCollapsed = false }: ThemeToggleProps) {
   const [mounted, setMounted] = useState(false)
-  const [theme, setTheme] = useState<'light' | 'dark'>('light')
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark')
 
   useEffect(() => {
     setMounted(true)
     
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null
-    const initialTheme = savedTheme || 'light'
+    const initialTheme = savedTheme || 'dark' // Default to dark mode
     
     setTheme(initialTheme)
     applyTheme(initialTheme)
